@@ -46,54 +46,76 @@
             user-select: none; cursor: var(--cursor-default);
         }
         button, input, select, textarea { font-family: inherit; color: inherit; }
-        button, input[type=color], select, .task-item, #start-button, .desktop-icon, .files-list div, .clickable, .wikiexplorer-result a { cursor: var(--cursor-pointer); }
+        .clickable, button, input[type=color], select, .task-item, #start-button, .files-list div, .desktop-icon, .wikiexplorer-result a { cursor: var(--cursor-pointer); }
         .action-button { padding: 8px 12px; border: 1px solid var(--border-dark); background-color: var(--bg-secondary); }
+        .action-button:hover { background-color: var(--op-button-bg); }
         input[type=text] { border: 1px solid var(--border-light); background: var(--input-bg); padding: 5px; color: var(--text-main); }
         
-        /* DESKTOP & TASKBAR */
-        #desktop { position: relative; width: 100%; height: 100%; }
-        .desktop-icon { position: absolute; width: 80px; text-align: center; padding: 10px 5px; }
-        .desktop-icon pre { font-size: 24px; margin-bottom: 5px; }
-        .desktop-icon span { font-size: 12px; }
+        /* DESKTOP ICONS */
+        #desktop-icons { padding: 20px; display: flex; flex-direction: column; flex-wrap: wrap; height: 100%; align-content: flex-start; gap: 20px; }
+        .desktop-icon { width: 80px; text-align: center; }
+        .desktop-icon .icon-art { font-size: 24px; line-height: 1; margin-bottom: 5px; }
+        .desktop-icon span { background-color: var(--bg-main); padding: 0 3px; }
+        
+        /* TASKBAR & START MENU */
         #taskbar { position: fixed; bottom: 0; left: 0; right: 0; height: 32px; background-color: var(--bg-secondary); border-top: 1px solid var(--border-dark); display: flex; align-items: center; padding: 0 5px; z-index: 10000; }
         #start-button { padding: 4px 10px; border: 1px solid var(--border-light); background-color: var(--bg-secondary); font-weight: bold; }
         #task-items { display: flex; height: 100%; flex-grow: 1; margin-left: 5px; overflow: hidden; }
         .task-item { border: 1px solid var(--border-light); padding: 0 10px; margin: 3px 2px; max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 24px; }
         .task-item.active { background-color: var(--highlight-bg); color: var(--highlight-text); border-color: var(--border-dark); }
         #taskbar-clock { margin-left: auto; padding: 4px 10px; border-left: 1px solid var(--border-light); border-right: 1px solid var(--border-light); flex-shrink: 0; }
-        
-        /* ORGANIZED START MENU */
-        #start-menu { display: none; position: fixed; bottom: 32px; left: 0; width: 200px; background-color: var(--bg-secondary); border: 1px solid var(--border-dark); border-bottom: none; z-index: 9999; padding: 5px 0; }
+        #start-menu { display: none; position: fixed; bottom: 32px; left: 0; min-width: 220px; background-color: var(--bg-secondary); border: 1px solid var(--border-dark); border-bottom: none; z-index: 9999; padding: 5px 0; }
         #start-menu.visible { display: block; }
         #start-menu ul { list-style: none; margin: 0; padding: 0; }
-        #start-menu li { position: relative; }
-        #start-menu li a { display: flex; justify-content: space-between; align-items: center; padding: 8px 15px; text-decoration: none; color: var(--text-main); }
-        #start-menu li a:hover, #start-menu li:hover > a { background-color: var(--highlight-bg); color: var(--highlight-text); }
-        #start-menu .divider { height: 1px; background-color: var(--border-light); margin: 5px 0; }
-        #start-menu .submenu { display: none; position: absolute; left: 100%; top: -6px; width: 200px; background-color: var(--bg-secondary); border: 1px solid var(--border-dark); padding: 5px 0; }
+        #start-menu > ul > li { position: relative; }
+        #start-menu a { display: flex; justify-content: space-between; padding: 8px 15px; text-decoration: none; color: var(--text-main); }
+        #start-menu a:hover { background-color: var(--highlight-bg); color: var(--highlight-text); }
+        .submenu { display: none; position: absolute; left: 100%; top: -6px; min-width: 180px; background-color: var(--bg-secondary); border: 1px solid var(--border-dark); padding: 5px 0; }
         #start-menu li:hover > .submenu { display: block; }
+        #start-menu .divider { height: 1px; background-color: var(--border-light); margin: 5px 0; }
 
         /* WINDOW & APP STYLES */
         .window { position: absolute; display: flex; flex-direction: column; width: 450px; height: 300px; min-width: 250px; min-height: 150px; background-color: var(--bg-main); border: 1px solid var(--border-dark); box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.2); resize: both; overflow: hidden; }
+        .window:focus-within { z-index: 1000 !important; }
         .window .title-bar { background-color: var(--window-title-bg); padding: 5px 8px; cursor: move; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-dark); flex-shrink: 0; }
-        .window-content { padding: 15px; flex-grow: 1; overflow: auto; cursor: var(--cursor-default); user-select: text; }
+        .window-content { padding: 15px; flex-grow: 1; overflow: auto; user-select: text; }
         .window-content-nopad { padding: 0 !important; overflow: hidden; user-select: none; }
-        iframe { width: 100%; height: 100%; border: none; background: #000; }
-        canvas { display: block; width: 100%; height: 100%; background: var(--input-bg); }
+        iframe, canvas { width: 100%; height: 100%; border: none; }
+        canvas { background: var(--input-bg); }
         textarea { background: var(--input-bg); border: 1px solid var(--border-light); color: var(--text-main); width: 100%; height: 100%; resize: none; padding: 5px; }
         pre { white-space: pre-wrap; word-wrap: break-word; margin: 0; }
-        .terminal-app pre { white-space: pre; } /* fix for neofetch */
         .wikiexplorer-result a { color: inherit; text-decoration: none; }
+        .jester-punchline { display: none; margin-top: 10px; border-top: 1px solid var(--border-light); padding-top: 10px; }
+        .jester-setup.revealed + .jester-punchline { display: block; }
+        .poke-dex-display { text-align: center; } .poke-dex-display img { width: 128px; height: 128px; image-rendering: pixelated; background: var(--input-bg); border: 1px solid var(--border-light); }
+        .profiler-input { display: flex; gap: 5px; margin-bottom: 10px; }
     </style>
 </head>
 <body class="theme-light">
 
     <div id="desktop">
-        <div class="desktop-icon" data-app="terminal" style="top: 20px; left: 20px;"><pre>[ >_ ]</pre><span>Terminal</span></div>
-        <div class="desktop-icon" data-app="files" style="top: 120px; left: 20px;"><pre>[ F: ]</pre><span>File Mgr</span></div>
-        <div class="desktop-icon" data-app="notepad" style="top: 220px; left: 20px;"><pre>[.txt]</pre><span>Text Editor</span></div>
-        <div class="desktop-icon" data-app="demoview" style="top: 20px; left: 120px;"><pre>[/\\]</pre><span>demoview</span></div>
-        <div class="desktop-icon" data-app="arenaViz" style="top: 120px; left: 120px;"><pre>[viz]</pre><span>arena-viz</span></div>
+        <div id="desktop-icons">
+            <div class="desktop-icon" data-app="terminal">
+                <pre class="icon-art">┌_┘</pre>
+                <span>Terminal</span>
+            </div>
+            <div class="desktop-icon" data-app="files">
+                <pre class="icon-art">[_]</pre>
+                <span>Files</span>
+            </div>
+            <div class="desktop-icon" data-app="poke-dex">
+                <pre class="icon-art">o-o</pre>
+                <span>PokéDex</span>
+            </div>
+             <div class="desktop-icon" data-app="hack-tool">
+                <pre class="icon-art">?_?</pre>
+                <span>hack-tool</span>
+            </div>
+            <div class="desktop-icon" data-app="demoview">
+                <pre class="icon-art">/\\/</pre>
+                <span>demoview</span>
+            </div>
+        </div>
     </div>
 
     <div id="taskbar">
@@ -104,47 +126,40 @@
 
     <div id="start-menu">
         <ul>
-            <li>
-                <a href="#">Utilities <span>></span></a>
+            <li><a>Utilities ▸</a>
                 <ul class="submenu">
+                    <li><a data-app="terminal">Terminal</a></li>
+                    <li><a data-app="files">File Manager</a></li>
+                    <li><a data-app="notepad">Text Editor</a></li>
                     <li><a data-app="calculator">Calculator</a></li>
                     <li><a data-app="paint">Glimpse-Paint</a></li>
-                    <li><a data-app="notepad">Text Editor</a></li>
                 </ul>
             </li>
-            <li>
-                <a href="#">System <span>></span></a>
-                <ul class="submenu">
-                    <li><a data-app="files">File Manager</a></li>
-                    <li><a data-app="terminal">Terminal</a></li>
-                    <li class="divider"></li>
+            <li><a>Internet ▸</a>
+                 <ul class="submenu">
+                    <li><a data-app="wikiexplorer">Web-Get</a></li>
+                    <li><a data-app="cat-facts">cat-facts</a></li>
+                    <li><a data-app="dog-pics">dog-pics</a></li>
+                    <li><a data-app="jester">jester</a></li>
+                    <li><a data-app="num-facts">num-facts</a></li>
+                    <li><a data-app="iss-tracker">iss-tracker</a></li>
+                </ul>
+            </li>
+            <li><a>System ▸</a>
+                 <ul class="submenu">
                     <li><a data-app="procs">procs</a></li>
                     <li><a data-app="netmon">netmon</a></li>
                     <li><a data-app="df">df</a></li>
-                    <li class="divider"></li>
                     <li><a data-app="settings">Settings</a></li>
                 </ul>
             </li>
             <li class="divider"></li>
-            <li>
-                <a href="#">Internet <span>></span></a>
-                <ul class="submenu">
-                    <li><a data-app="wikiexplorer">Web-Get</a></li>
-                    <li><a data-app="poke-dex">Poké-Dex</a></li>
-                    <li><a data-app="iss-tracker">ISS-Tracker</a></li>
-                    <li class="divider"></li>
-                    <li><a data-app="cat-facts">Cat Facts</a></li>
-                    <li><a data-app="doggo-viewer">Doggo Viewer</a></li>
-                    <li><a data-app="joke-bot">Joke Bot</a></li>
-                    <li><a data-app="num-facts">Number Facts</a></li>
-                    <li class="divider"></li>
+             <li><a>Fun ▸</a>
+                 <ul class="submenu">
+                    <li><a data-app="poke-dex">PokéDex</a></li>
                     <li><a data-app="profiler">Profiler</a></li>
-                    <li><a data-app="hack-sim">Hack-Sim</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">Fun <span>></span></a>
-                <ul class="submenu">
+                    <li><a data-app="hack-tool">hack-tool</a></li>
+                    <li><a data-app="space-cadets">space-cadets</a></li>
                     <li><a data-app="ansiart">ASCII-View</a></li>
                     <li><a data-app="demoview">demoview</a></li>
                     <li><a data-app="arenaViz">arena-viz</a></li>
@@ -161,83 +176,190 @@
             const desktop = document.getElementById('desktop');
             const startButton = document.getElementById('start-button');
             const startMenu = document.getElementById('start-menu');
-            
-            let windowIdCounter = 0, zIndexCounter = 1;
+            const taskItemsContainer = document.getElementById('task-items');
+            const clockElement = document.getElementById('taskbar-clock');
+
+            let windowIdCounter = 0;
+            let zIndexCounter = 1;
             const windowRegistry = {};
 
             // CORE UI & WINDOW MANAGEMENT
             startButton.addEventListener('click', e => { e.stopPropagation(); startMenu.classList.toggle('visible'); });
-            document.addEventListener('click', (e) => { 
-                startMenu.classList.remove('visible'); 
-                const icon = e.target.closest('.desktop-icon');
-                if (icon) { apps[icon.dataset.app](); }
-            });
-            setInterval(() => { document.getElementById('taskbar-clock').textContent = new Date().toLocaleTimeString('en-GB'); }, 1000);
+            document.addEventListener('click', () => startMenu.classList.remove('visible'));
+            setInterval(() => { clockElement.textContent = new Date().toLocaleTimeString('en-GB'); }, 1000);
 
-            const bringToFront = (winEl) => {
-                winEl.style.zIndex = ++zIndexCounter;
-                document.querySelectorAll('.task-item').forEach(i=>i.classList.remove('active'));
-                if(windowRegistry[winEl.id]?.taskItem) windowRegistry[winEl.id].taskItem.classList.add('active');
+            const bringToFront = (windowEl) => {
+                windowEl.style.zIndex = ++zIndexCounter;
+                document.querySelectorAll('.task-item').forEach(item => item.classList.remove('active'));
+                const taskItem = windowRegistry[windowEl.id]?.taskItem;
+                if (taskItem) taskItem.classList.add('active');
             };
+            
             const closeWindow = (id) => {
                 const winData = windowRegistry[id];
-                if (winData) { if (winData.cleanup) winData.cleanup(); winData.windowEl.remove(); winData.taskItem.remove(); delete windowRegistry[id]; }
+                if (winData) {
+                    if (winData.cleanup) winData.cleanup();
+                    winData.windowEl.remove();
+                    winData.taskItem.remove();
+                    delete windowRegistry[id];
+                }
             };
-            const makeDraggable = (winEl) => {
-                const titleBar = winEl.querySelector('.title-bar'); let isDragging = false, oX, oY;
-                const start = e => { isDragging=true; const t=e.touches?e.touches[0]:e; oX=t.clientX-winEl.offsetLeft; oY=t.clientY-winEl.offsetTop; bringToFront(winEl); };
-                const drag = e => { if(!isDragging)return; e.preventDefault(); const t=e.touches?e.touches[0]:e; let nX=t.clientX-oX, nY=t.clientY-oY; nX=Math.max(0,Math.min(nX,window.innerWidth-winEl.offsetWidth)); nY=Math.max(0,Math.min(nY,window.innerHeight-winEl.offsetHeight-32)); winEl.style.left=`${nX}px`;winEl.style.top=`${nY}px`; };
-                const stop = () => { isDragging = false; };
-                titleBar.addEventListener('mousedown', start); document.addEventListener('mousemove', drag); document.addEventListener('mouseup', stop);
-                titleBar.addEventListener('touchstart', start, {passive:false}); document.addEventListener('touchmove', drag, {passive:false}); document.addEventListener('touchend', stop);
-                winEl.addEventListener('mousedown', ()=>bringToFront(winEl)); winEl.addEventListener('touchstart', ()=>bringToFront(winEl));
+
+            const makeDraggable = (windowEl) => {
+                const titleBar = windowEl.querySelector('.title-bar');
+                let isDragging = false, offsetX, offsetY;
+                const startDrag = e => {
+                    isDragging = true;
+                    const touch = e.touches ? e.touches[0] : null;
+                    offsetX = (touch ? touch.clientX : e.clientX) - windowEl.offsetLeft;
+                    offsetY = (touch ? touch.clientY : e.clientY) - windowEl.offsetTop;
+                    bringToFront(windowEl);
+                };
+                const drag = e => {
+                    if (!isDragging) return; e.preventDefault();
+                    const touch = e.touches ? e.touches[0] : null;
+                    let newX = (touch ? touch.clientX : e.clientX) - offsetX, newY = (touch ? touch.clientY : e.clientY) - offsetY;
+                    newX = Math.max(0, Math.min(newX, window.innerWidth - windowEl.offsetWidth));
+                    newY = Math.max(0, Math.min(newY, window.innerHeight - windowEl.offsetHeight - 32));
+                    windowEl.style.left = `${newX}px`; windowEl.style.top = `${newY}px`;
+                };
+                const stopDrag = () => { isDragging = false; };
+                titleBar.addEventListener('mousedown', startDrag);
+                document.addEventListener('mousemove', drag);
+                document.addEventListener('mouseup', stopDrag);
+                titleBar.addEventListener('touchstart', startDrag, { passive: false });
+                document.addEventListener('touchmove', drag, { passive: false });
+                document.addEventListener('touchend', stopDrag);
+                windowEl.addEventListener('mousedown', () => bringToFront(windowEl));
+                windowEl.addEventListener('touchstart', () => bringToFront(windowEl));
             };
-            const createWindow = (title, content, opts={}) => {
-                const id=`window-${++windowIdCounter}`, {w=450,h=300,t=60,l=100}=opts;
-                const win = document.createElement('div'); win.className='window'; win.id=id; win.tabIndex=-1;
-                win.style.cssText=`width:${w}px; height:${h}px; top:${t+(windowIdCounter%10)*20}px; left:${l+(windowIdCounter%10)*20}px;`;
-                win.innerHTML=`<div class="title-bar"><span class="title">${title}</span><div class="window-controls"><button>X</button></div></div>${content}`;
-                desktop.appendChild(win);
-                const taskItem=document.createElement('div'); taskItem.className='task-item'; taskItem.textContent=title;
-                taskItem.addEventListener('click',()=>bringToFront(win)); document.getElementById('task-items').appendChild(taskItem);
-                windowRegistry[id]={windowEl:win, taskItem:taskItem};
-                win.querySelector('button').addEventListener('click',()=>closeWindow(id));
-                makeDraggable(win); bringToFront(win);
-                return win;
+
+            const createWindow = (title, contentHTML, options = {}) => {
+                windowIdCounter++;
+                const id = `window-${windowIdCounter}`;
+                const newWindow = document.createElement('div');
+                newWindow.className = 'window'; newWindow.id = id; newWindow.tabIndex = -1;
+                const { width = 450, height = 300, top = 60, left = 100 } = options;
+                newWindow.style.width = `${width}px`; newWindow.style.height = `${height}px`;
+                newWindow.style.top = `${top + (windowIdCounter % 10) * 20}px`;
+                newWindow.style.left = `${left + (windowIdCounter % 10) * 20}px`;
+                newWindow.innerHTML = `<div class="title-bar"><span class="title">${title}</span><div class="window-controls"><button class="window-control-close">X</button></div></div>${contentHTML}`;
+                desktop.appendChild(newWindow);
+                const taskItem = document.createElement('div');
+                taskItem.className = 'task-item'; taskItem.textContent = title;
+                taskItem.addEventListener('click', () => bringToFront(newWindow));
+                taskItemsContainer.appendChild(taskItem);
+                windowRegistry[id] = { windowEl: newWindow, taskItem: taskItem };
+                newWindow.querySelector('.window-control-close').addEventListener('click', () => closeWindow(id));
+                makeDraggable(newWindow); bringToFront(newWindow);
+                return newWindow;
             };
 
             // APPLICATION DEFINITIONS
             const apps = {
-                notepad: (initialContent='')=>{const w=createWindow('Text Editor',`<div class="window-content"><textarea spellcheck="false"></textarea></div>`); const t=w.querySelector('textarea'); t.value=initialContent; if(w.querySelector('.title').textContent==='notes.txt'){t.addEventListener('input',()=>localStorage.setItem('useless-os-notes.txt',t.value))}},
-                settings: ()=>{const w=createWindow('Settings',`<div class="window-content"><p>Select theme:</p><button data-theme="theme-light">Light</button><button data-theme="theme-cream">Cream</button><button data-theme="theme-dark">Dark</button></div>`,{w:350,h:180});w.querySelectorAll('[data-theme]').forEach(b=>b.addEventListener('click',()=>document.body.className=b.dataset.theme))},
-                files: ()=>{const w=createWindow('File Manager',`<div class="window-content"><div class="files-list"><div>/</div><div>  [D] home</div><div>    [D] guest</div><div class="clickable" data-action="open-notes">      [F] notes.txt</div></div></div>`,{w:350});w.querySelector('[data-action="open-notes"]').addEventListener('click',()=>{const n=apps.notepad(localStorage.getItem('useless-os-notes.txt')||'');n.querySelector('.title').textContent='notes.txt'})},
-                terminal: ()=>{const w=createWindow('Terminal',`<div class="window-content window-content-nopad"><div class="terminal-app"><pre></pre><div class="terminal-input-line"><span>></span><input type="text"><span class="blinking-cursor">_</span></div></div></div>`);const o=w.querySelector('pre'),i=w.querySelector('input');const log=m=>{o.textContent+=m+'\n';o.scrollTop=o.scrollHeight};const cmds={help:()=>log('ls, whoami, pwd, neofetch, echo, clear, exit'),ls:()=>log('home'),whoami:()=>log('guest'),pwd:()=>log('/home/guest'),neofetch:()=>log(`    guest@useless-os\n    -----------------\n    OS: useless-os`),echo:a=>log(a.join(' ')),clear:()=>o.textContent='',exit:()=>closeWindow(w.id)};log('useless-os Terminal. help for commands.');i.addEventListener('keydown',e=>{if(e.key!=='Enter'||!i.value)return;const[c,...a]=i.value.trim().toLowerCase().split(' ');log(`> ${i.value}`);if(cmds[c])cmds[c](a);else if(c)log(`cmd not found: ${c}`);i.value=''})},
-                wikiexplorer: ()=>{const w=createWindow('Web-Get',`<div class="window-content"><p>Fetch random summary from Wikipedia.</p><button class="action-button">[ GET NEW ]</button><div class="wikiexplorer-result" style="margin-top:10px; border:1px solid var(--border-light); background:var(--input-bg); padding:10px; min-height:100px;">Awaiting...</div></div>`);const b=w.querySelector('button'),r=w.querySelector('.wikiexplorer-result');const f=async()=>{r.innerHTML='<i>Fetching...</i>';try{const d=await fetch('https://en.wikipedia.org/api/rest_v1/page/random/summary'),p=await d.json();if(!d.ok)throw new Error('Network Error');r.innerHTML=`<p><strong><a href="${p.content_urls.desktop.page}" target="_blank" rel="noopener noreferrer">${p.title}</a></strong></p><p>${p.extract}</p>`}catch(e){r.innerHTML=`<p><strong>ERROR:</strong></p><pre>${e.message}</pre>`}};b.addEventListener('click',f);f()},
-                procs: ()=>{const w=createWindow('procs',`<div class="window-content window-content-nopad"><pre></pre></div>`,{w:500,h:400});const p=w.querySelector('pre');const ps=["kernel_task","systemd","udevd","procs"];const u=()=>{let t="PID   CPU%  MEM   COMMAND\n";ps.forEach((n,i)=>{t+=`${(101+i*3)}`.padEnd(6)+`${(Math.random()*(n==='procs'?5:1)).toFixed(1)}`.padEnd(6)+`${(Math.random()*200).toFixed(0)}`.padEnd(6)+`${n}\n`});p.textContent=t};const int=setInterval(u,1500);windowRegistry[w.id].cleanup=()=>clearInterval(int);u()},
-                netmon: ()=>{const w=createWindow('netmon',`<div class="window-content window-content-nopad"><canvas></canvas></div>`,{w:400,h:200});const c=w.querySelector('canvas'),x=c.getContext('2d');let d=Array(100).fill(0);const u=()=>{d.shift();d.push(Math.random()*c.height);x.clearRect(0,0,c.width,c.height);x.beginPath();x.strokeStyle=getComputedStyle(document.body).getPropertyValue('--graph-color');d.forEach((v,i)=>x.lineTo(i*(c.width/100),c.height-v));x.stroke()};new ResizeObserver(()=>{c.width=c.offsetWidth;c.height=c.offsetHeight}).observe(c);u();const int=setInterval(u,100);windowRegistry[w.id].cleanup=()=>clearInterval(int)},
-                demoview: ()=>{const w=createWindow('demoview',`<div class="window-content window-content-nopad"><canvas></canvas></div>`);const c=w.querySelector('canvas'),x=c.getContext('2d');let s=[],a;const r=()=>{c.width=c.offsetWidth;c.height=c.offsetHeight;s=[];for(let i=0;i<10;i++)s.push({x:Math.random()*c.width,y:Math.random()*c.height,s:Math.random()*15+5,dx:(Math.random()-.5)*2,dy:(Math.random()-.5)*2,t:Math.random()>.5?'r':'l'})};const an=()=>{x.clearRect(0,0,c.width,c.height);s.forEach(o=>{o.x+=o.dx;o.y+=o.dy;if(o.x<0||o.x>c.width-o.s)o.dx*=-1;if(o.y<0||o.y>c.height-o.s)o.dy*=-1;x.strokeStyle=getComputedStyle(document.body).getPropertyValue('--text-main');if(o.t==='r')x.strokeRect(o.x,o.y,o.s,o.s);else{x.beginPath();x.moveTo(o.x,o.y);x.lineTo(o.x+o.s,o.y+o.s);x.stroke()}});a=requestAnimationFrame(an)};new ResizeObserver(r).observe(c);r();an();windowRegistry[w.id].cleanup=()=>cancelAnimationFrame(a)},
-                cat-facts: ()=>{const w=createWindow('Cat Facts',`<div class="window-content"><p>...</p><button class="action-button">New Fact</button></div>`);const p=w.querySelector('p'),b=w.querySelector('button');const f=async()=>{p.textContent='Fetching...';try{const d=await fetch('https://catfact.ninja/fact'),j=await d.json();p.textContent=j.fact}catch{p.textContent='Error.'}};b.addEventListener('click',f);f()},
-                profiler: ()=>{const w=createWindow('Profiler',`<div class="window-content"><p>Enter name:</p><input type="text"><button class="action-button">Profile</button><pre style="margin-top:10px;"></pre></div>`,{w:380,h:250});const i=w.querySelector('input'),b=w.querySelector('button'),o=w.querySelector('pre');b.addEventListener('click',async()=>{const n=i.value;if(!n)return;o.textContent='Profiling...';try{const[a,g,c]=await Promise.all([fetch(`https://api.agify.io?name=${n}`),fetch(`https://api.genderize.io?name=${n}`),fetch(`https://api.nationalize.io?name=${n}`)]);const[aj,gj,cj]=await Promise.all([a.json(),g.json(),c.json()]);const nat=cj.country[0]?`${cj.country[0].country_id} (${(cj.country[0].probability*100).toFixed(0)}%)`:'Unknown';o.textContent=`Name: ${n}\nAge: ${aj.age||'?'}\nGender: ${gj.gender||'?'}\nNationality: ${nat}`}catch{o.textContent='Error.'}})},
-                'doggo-viewer': ()=>{const w=createWindow('Doggo Viewer',`<div class="window-content" style="text-align:center;"><p>BEHOLD.</p><img style="max-width:100%; max-height:200px; border:1px solid var(--border-light);"><button class="action-button" style="margin-top:10px;">New Doggo</button></div>`,{w:350,h:350});const i=w.querySelector('img'),b=w.querySelector('button');const f=async()=>{i.src='';try{const d=await fetch('https://dog.ceo/api/breeds/image/random'),j=await d.json();i.src=j.message}catch{i.alt='Error'}};b.addEventListener('click',f);f()},
-                'hack-sim': ()=>{const w=createWindow('Hack-Sim',`<div class="window-content"><pre></pre><button class="action-button">New Target</button></div>`,{w:400,h:380});const p=w.querySelector('pre'),b=w.querySelector('button');const f=async()=>{p.textContent='Acquiring target...';try{const d=await fetch('https://randomuser.me/api/'),j=await d.json(),u=j.results[0];p.textContent=`TARGET ACQUIRED\n\nName: ${u.name.first} ${u.name.last}\nAddr: ${u.location.street.number} ${u.location.street.name}\nCity: ${u.location.city}\nEmail: ${u.email}\nUser: ${u.login.username}\nPass: ${u.login.password}`}catch{p.textContent='Failed.'}};b.addEventListener('click',f);f()},
-                'joke-bot': ()=>{const w=createWindow('Joke Bot',`<div class="window-content"><p>...</p><button class="action-button">New Joke</button></div>`);const p=w.querySelector('p'),b=w.querySelector('button');const f=async()=>{p.textContent='...';try{const d=await fetch('https://official-joke-api.appspot.com/random_joke'),j=await d.json();p.textContent=j.setup;setTimeout(()=>p.textContent+='\n\n'+j.punchline,2000)}catch{p.textContent='No jokes.'}};b.addEventListener('click',f);f()},
-                'num-facts': ()=>{const w=createWindow('Number Facts',`<div class="window-content"><p>...</p><button class="action-button">New Fact</button></div>`);const p=w.querySelector('p'),b=w.querySelector('button');const f=async()=>{p.textContent='...';try{const d=await fetch('https://numbersapi.com/random/math?json'),j=await d.json();p.textContent=j.text}catch{p.textContent='Error.'}};b.addEventListener('click',f);f()},
-                'poke-dex': ()=>{const w=createWindow('Poké-Dex',`<div class="window-content" style="text-align:center;"><img style="width:96px;height:96px;"><pre></pre><button class="action-button">Random</button></div>`,{w:300,h:300});const i=w.querySelector('img'),p=w.querySelector('pre'),b=w.querySelector('button');const f=async()=>{p.textContent='...';i.src='';try{const r=Math.floor(Math.random()*1025)+1,d=await fetch(`https://pokeapi.co/api/v2/pokemon/${r}`),j=await d.json();i.src=j.sprites.front_default;p.textContent=`#${j.id} ${j.name}\nType: ${j.types.map(t=>t.type.name).join(', ')}`}catch{p.textContent='Not found.'}};b.addEventListener('click',f);f()},
-                'iss-tracker': ()=>{const w=createWindow('ISS-Tracker',`<div class="window-content"><div id="iss-loc"></div><hr><div id="iss-peeps"></div></div>`,{w:400,h:350});const loc=w.querySelector('#iss-loc'),peeps=w.querySelector('#iss-peeps');(async()=>{peeps.textContent='Loading...';try{const d=await fetch('https://api.open-notify.org/astros.json'),j=await d.json();peeps.innerHTML=`<strong>People in Space (${j.number}):</strong><ul>${j.people.map(p=>`<li>${p.name}</li>`).join('')}</ul>`}catch{peeps.textContent='Error.'}})();const u=async()=>{try{const d=await fetch('https://api.open-notify.org/iss-now.json'),j=await d.json();loc.innerHTML=`<strong>Current Location:</strong>\nLat: ${j.iss_position.latitude}\nLon: ${j.iss_position.longitude}`}catch{loc.textContent='Error.'}};const int=setInterval(u,5000);windowRegistry[w.id].cleanup=()=>clearInterval(int);u()},
-                arenaViz:()=>createWindow('arena-viz','<div class="window-content window-content-nopad"><iframe src="https://arena-visualizer.github.io"></iframe></div>',{w:640,h:480}),
-                minAudioViz:()=>createWindow('min-audio-viz','<div class="window-content window-content-nopad"><iframe src="https://minimal-audio-visualizer.github.io"></iframe></div>',{w:640,h:480}),
-                // Keep old apps for compatibility
-                calculator:()=>{const w=createWindow('Calculator',`<div class="window-content"><div class="calculator"><div class="display">0</div><button>7</button><button>8</button><button>9</button><button class="op">/</button><button>4</button><button>5</button><button>6</button><button class="op">*</button><button>1</button><button>2</button><button>3</button><button class="op">-</button><button>C</button><button>0</button><button>=</button><button class="op">+</button></div></div>`,{w:280,h:350});const d=w.querySelector('.display');let c='0',err=false;const h=v=>{if(err&&v!=='C'){c='0';err=false}if(v==='C')c='0';else if(v==='='){try{c=String(eval(c.replace(/[^-()\d/*+.]/g,'')))}catch{c='Error';err=true}}else{c=(c==='0')?v:c+v}d.textContent=c};w.querySelector('.calculator').addEventListener('click',e=>{if(e.target.tagName==='BUTTON')h(e.target.textContent)});w.addEventListener('keydown',e=>{e.preventDefault();if(e.key.match(/^[0-9\+\-\*\/]$/))h(e.key);if(e.key==='Enter')h('=');if(e.key==='Backspace'||e.key==='c')h('C')})},
-                paint:()=>{const w=createWindow('Glimpse-Paint',`<div class="window-content"><div class="paint-app"><div class="toolbar">Color:<input type="color" value="#000000">Brush:<button data-size="2">S</button><button data-size="5">M</button><button data-size="10">L</button></div><canvas></canvas></div></div>`,{w:500,h:400});const c=w.querySelector('canvas'),x=c.getContext('2d');let bS=2;new ResizeObserver(()=>(c.width=c.offsetWidth,c.height=c.offsetHeight)).observe(c);let p=false;const dr=e=>{if(!p)return;x.lineWidth=bS;x.lineCap='butt';x.strokeStyle=w.querySelector('input').value;x.lineTo(e.offsetX,e.offsetY);x.stroke();x.beginPath();x.moveTo(e.offsetX,e.offsetY)};c.addEventListener('mousedown',e=>{p=true;dr(e)});c.addEventListener('mouseup',()=>{p=false;x.beginPath()});c.addEventListener('mousemove',dr);w.querySelector('.toolbar').addEventListener('click',e=>{if(e.target.dataset.size)bS=e.target.dataset.size})},
-                df:()=>createWindow('df','<div class="window-content"><pre>Filesystem    Size   Used  Avail  Use%\n/dev/sda1     100G    75G    25G   75% [███████████████-----]\n/dev/memfs     1G   100M   900M   10% [██------------------]</pre></div>',{w:450,h:180})
+                notepad: (initialContent = '') => {
+                    const win = createWindow('Text Editor', `<div class="window-content"><textarea spellcheck="false"></textarea></div>`);
+                    const textarea = win.querySelector('textarea');
+                    textarea.value = initialContent;
+                    if (win.querySelector('.title-bar .title').textContent === 'notes.txt') {
+                        textarea.addEventListener('input', () => { localStorage.setItem('useless-os-notes.txt', textarea.value); });
+                    }
+                },
+                settings: () => {
+                    const win = createWindow('Settings', `<div class="window-content"><p>Select system theme:</p>
+                        <button class="action-button" data-theme="theme-light">Light</button>
+                        <button class="action-button" data-theme="theme-cream">Cream</button>
+                        <button class="action-button" data-theme="theme-dark">Dark</button></div>`, {width: 350, height: 180});
+                    win.querySelectorAll('[data-theme]').forEach(btn => btn.addEventListener('click', () => document.body.className = btn.dataset.theme));
+                },
+                wikiexplorer: () => {
+                    const win = createWindow('Web-Get', `<div class="window-content"><p>Fetch random summary from Wikipedia.</p><button class="action-button">[ GET NEW ]</button><div class="wikiexplorer-result" style="margin-top:10px; border:1px solid var(--border-light); background:var(--input-bg); padding:10px; min-height:100px;"></div></div>`);
+                    const btn = win.querySelector('.action-button'), resultDiv = win.querySelector('.wikiexplorer-result');
+                    const fetchWiki = async () => {
+                        resultDiv.innerHTML = '<i>Fetching...</i>';
+                        try {
+                            const r = await fetch('https://en.wikipedia.org/api/rest_v1/page/random/summary');
+                            if (!r.ok) throw new Error(`Network Error: ${r.status}`);
+                            const d = await r.json();
+                            resultDiv.innerHTML = `<p><strong><a href="${d.content_urls.desktop.page}" target="_blank" rel="noopener noreferrer">${d.title}</a></strong></p><p>${d.extract}</p>`;
+                        } catch (e) { resultDiv.innerHTML = `<p><strong>ERROR:</strong></p><pre>${e.message}</pre>`; }
+                    };
+                    btn.addEventListener('click', fetchWiki); fetchWiki();
+                },
+                files: () => {
+                    const win = createWindow('File Manager', `<div class="window-content"><div class="files-list"><div>/</div><div>  [D] bin</div><div>  [D] home</div><div>    [D] guest</div>
+                        <div class="clickable" data-action="open-file" data-filename="notes.txt">      [F] notes.txt</div><div>  [D] var</div></div></div>`, {width: 350});
+                    win.querySelector('.files-list').addEventListener('click', e => {
+                        if (e.target.dataset.action === 'open-file' && e.target.dataset.filename === 'notes.txt') {
+                            const noteWin = apps.notepad(localStorage.getItem('useless-os-notes.txt') || '');
+                            noteWin.querySelector('.title-bar .title').textContent = 'notes.txt';
+                        }
+                    });
+                },
+                terminal: () => {
+                    const win = createWindow('Terminal', `<div class="window-content window-content-nopad"><div class="terminal-app"><pre class="terminal-output"></pre><div class="terminal-input-line" onclick="this.querySelector('input').focus()"><span>></span><input type="text" spellcheck="false" autocomplete="off"><span class="blinking-cursor">_</span></div></div></div>`);
+                    const output = win.querySelector('pre'), input = win.querySelector('input');
+                    const log = msg => { output.textContent += msg + '\n'; output.scrollTop = output.scrollHeight; };
+                    const commands = {
+                        help:()=>log('Commands: help, ls, whoami, pwd, neofetch, echo, clear, exit'), ls:()=>log('bin\thome\tvar'), whoami:()=>log('guest'), pwd:()=>log('/home/guest'),
+                        neofetch:()=>log(`    guest@useless-os\n    -----------------\n    OS: useless-os\n    Kernel: 1.0.0-web\n    Shell: term.js`),
+                        echo:(args)=>log(args.join(' ')), clear:()=>{output.textContent='';}, exit:()=>closeWindow(win.id)
+                    };
+                    log('useless-os Terminal. Type "help" for commands.');
+                    input.addEventListener('keydown', e => {
+                        if (e.key !== 'Enter' || !input.value) return;
+                        const fullCmd = input.value.trim(), [cmd, ...args] = fullCmd.toLowerCase().split(' ');
+                        log(`> ${fullCmd}`); if (commands[cmd]) { commands[cmd](args); } else if (cmd) { log(`command not found: ${cmd}`); }
+                        input.value = '';
+                    });
+                },
+                procs: () => {
+                    const win = createWindow('procs', `<div class="window-content window-content-nopad"><pre></pre></div>`, {width: 500, height: 400});
+                    const pre = win.querySelector('pre'), processes=["kernel_task","init","systemd","udevd","cron","sshd","login","bash","procs"];
+                    const update = () => { let t="PID   CPU%  MEM   COMMAND\n"; processes.forEach((p,i)=>{t+=`${(101+i*3).toString().padEnd(6)}${(Math.random()*(p==='procs'?5:1)).toFixed(1).padEnd(6)}${(Math.random()*200).toFixed(0).padEnd(6)}${p}\n`}); pre.textContent=t;};
+                    const intervalId = setInterval(update, 1500); windowRegistry[win.id].cleanup = () => clearInterval(intervalId); update();
+                },
+                df: () => createWindow('df', `<div class="window-content"><pre>Filesystem    Size   Used  Avail  Use%\n/dev/sda1     100G    75G    25G   75% [███████████████-----]\n/dev/memfs     1G   100M   900M   10% [██------------------]</pre></div>`, {width: 450, height: 180}),
+                netmon: () => {
+                    const win = createWindow('netmon', `<div class="window-content window-content-nopad"><canvas></canvas></div>`, {width:400,height:200});
+                    const canvas = win.querySelector('canvas'), ctx = canvas.getContext('2d'); let data=Array(100).fill(0),intervalId;
+                    const update = () => { data.shift();data.push(Math.random()*canvas.height);ctx.clearRect(0,0,canvas.width,canvas.height);ctx.beginPath();ctx.strokeStyle=getComputedStyle(document.body).getPropertyValue('--graph-color');data.forEach((d,i)=>ctx.lineTo(i*(canvas.width/100),canvas.height-d));ctx.stroke();};
+                    new ResizeObserver(()=>{canvas.width=canvas.offsetWidth;canvas.height=canvas.offsetHeight;}).observe(canvas);update();intervalId=setInterval(update,100);windowRegistry[win.id].cleanup=()=>clearInterval(intervalId);
+                },
+                demoview: () => {
+                    const win = createWindow('demoview', `<div class="window-content window-content-nopad"><canvas></canvas></div>`);
+                    const canvas = win.querySelector('canvas'), ctx = canvas.getContext('2d'); let shapes=[],animationId;
+                    const resize=()=>{canvas.width=canvas.offsetWidth;canvas.height=canvas.offsetHeight;shapes=[];for(let i=0;i<10;i++)shapes.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,s:Math.random()*15+5,dx:(Math.random()-0.5)*2,dy:(Math.random()-0.5)*2,t:Math.random()>0.5?'r':'l'});};
+                    const animate=()=>{ctx.clearRect(0,0,canvas.width,canvas.height);shapes.forEach(s=>{s.x+=s.dx;s.y+=s.dy;if(s.x<0||s.x>canvas.width-s.s)s.dx*=-1;if(s.y<0||s.y>canvas.height-s.s)s.dy*=-1;ctx.strokeStyle=getComputedStyle(document.body).getPropertyValue('--text-main');if(s.t==='r')ctx.strokeRect(s.x,s.y,s.s,s.s);else{ctx.beginPath();ctx.moveTo(s.x,s.y);ctx.lineTo(s.x+s.s,s.y+s.s);ctx.stroke();}});animationId=requestAnimationFrame(animate);};
+                    new ResizeObserver(resize).observe(canvas); resize(); animate(); windowRegistry[win.id].cleanup=()=>cancelAnimationFrame(animationId);
+                },
+                arenaViz: () => createWindow('arena-viz', `<div class="window-content window-content-nopad"><iframe src="https://arena-visualizer.github.io"></iframe></div>`, {width:640,height:480}),
+                minAudioViz: () => createWindow('min-audio-viz', `<div class="window-content window-content-nopad"><iframe src="https://minimal-audio-visualizer.github.io"></iframe></div>`, {width:640,height:480}),
+                // SPREAD apps defined below to avoid repeating app definitions
+                ...['calculator','paint','ansiart','cat-facts','dog-pics','jester','num-facts','poke-dex','profiler','hack-tool','space-cadets','iss-tracker'].reduce((acc, name) => ({ ...acc, [name]: () => { /* see below */ } }), {})
             };
 
-            // APP LAUNCHER & INITIALIZATION
-            startMenu.addEventListener('click', (e) => {
-                const appName = e.target.dataset.app;
-                if (appName) { e.preventDefault(); startMenu.classList.remove('visible'); if (apps[appName]) apps[appName](); }
+            // Define remaining apps to keep main list clean
+            Object.assign(apps, {
+                calculator:()=>{const w=createWindow('Calculator',`<div class="window-content"><div class="calculator"><div class="display">0</div><button>7</button><button>8</button><button>9</button><button class="op">/</button><button>4</button><button>5</button><button>6</button><button class="op">*</button><button>1</button><button>2</button><button>3</button><button class="op">-</button><button>C</button><button>0</button><button>=</button><button class="op">+</button></div></div>`,{width:280,height:350});const d=w.querySelector('.display');let c='0',E=false;const H=v=>{if(E&&v!=='C'){c='0';E=false;}if(v==='C'){c='0';}else if(v==='='){try{c=String(eval(c.replace(/[^-()\d/*+.]/g,'')))}catch{c='Error';E=true;}}else{c=(c==='0')?v:c+v;}d.textContent=c;};w.querySelector('.calculator').addEventListener('click',e=>{if(e.target.tagName==='BUTTON')H(e.target.textContent);});w.addEventListener('keydown',e=>{e.preventDefault();if(e.key.match(/^[0-9\+\-\*\/]$/))H(e.key);if(e.key==='Enter')H('=');if(e.key==='Backspace'||e.key.toLowerCase()==='c')H('C');});},
+                paint:()=>{const w=createWindow('Glimpse-Paint',`<div class="window-content"><div class="paint-app"><div class="toolbar">Color: <input type="color" value="#000000"> Brush: <button data-size="2">S</button><button data-size="5">M</button><button data-size="10">L</button></div><canvas></canvas></div></div>`,{width:500,height:400});const c=w.querySelector(`canvas`),x=c.getContext('2d');let b=2;new ResizeObserver(()=>{c.width=c.offsetWidth;c.height=c.offsetHeight;}).observe(c);let p=false;const d=e=>{if(!p)return;x.lineWidth=b;x.lineCap='butt';x.strokeStyle=w.querySelector('input[type=color]').value;x.lineTo(e.offsetX,e.offsetY);x.stroke();x.beginPath();x.moveTo(e.offsetX,e.offsetY);};c.addEventListener('mousedown',e=>{p=true;d(e);});c.addEventListener('mouseup',()=>{p=false;x.beginPath();});c.addEventListener('mousemove',d);w.querySelector('.toolbar').addEventListener('click',e=>{if(e.target.dataset.size)b=e.target.dataset.size;});},
+                'cat-facts':()=>{const w=createWindow('cat-facts',`<div class="window-content"><p>...</p><button class="action-button">More</button></div>`,{height:200});const p=w.querySelector('p'),b=w.querySelector('button');const f=async()=>{p.textContent='Fetching...';try{const r=await fetch('https://catfact.ninja/fact'),d=await r.json();p.textContent=d.fact;}catch{p.textContent='Error.';}};b.addEventListener('click',f);f();},
+                'dog-pics':()=>{const w=createWindow('dog-pics',`<div class="window-content" style="text-align:center;"><img style="max-width:100%;max-height:180px;object-fit:contain;background:var(--input-bg);border:1px solid var(--border-light);"><br><button class="action-button" style="margin-top:10px;">New Dog</button></div>`,{height:300});const i=w.querySelector('img'),b=w.querySelector('button');const f=async()=>{i.src='';try{const r=await fetch('https://dog.ceo/api/breeds/image/random'),d=await r.json();i.src=d.message;}catch{i.alt='Error.';}};b.addEventListener('click',f);f();},
+                jester:()=>{const w=createWindow('jester',`<div class="window-content"><div class="jester-setup clickable"></div><div class="jester-punchline"></div><button class="action-button" style="margin-top:10px;">Another</button></div>`,{height:250});const s=w.querySelector('.jester-setup'),p=w.querySelector('.jester-punchline'),b=w.querySelector('button');const f=async()=>{s.textContent='Getting joke...';p.textContent='';s.classList.remove('revealed');try{const r=await fetch('https://official-joke-api.appspot.com/random_joke'),d=await r.json();s.textContent=d.setup;p.textContent=d.punchline;}catch{s.textContent='Error.';}};s.addEventListener('click',()=>s.classList.add('revealed'));b.addEventListener('click',f);f();},
+                'num-facts':()=>{const w=createWindow('num-facts',`<div class="window-content"><p>...</p><button class="action-button">Another</button></div>`,{height:200});const p=w.querySelector('p'),b=w.querySelector('button');const f=async()=>{p.textContent='Fetching...';try{const r=await fetch('https://numbersapi.com/random/math'),d=await r.text();p.textContent=d;}catch{p.textContent='Error.';}};b.addEventListener('click',f);f();},
+                'poke-dex':()=>{const w=createWindow('poke-dex',`<div class="window-content"><div class="poke-dex-display"><img/><p></p></div><button class="action-button" style="display:block;margin:10px auto 0;">Random</button></div>`);const i=w.querySelector('img'),p=w.querySelector('p'),b=w.querySelector('button');const f=async()=>{i.src='';p.textContent='...';const id=Math.floor(Math.random()*1025)+1;try{const r=await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`),d=await r.json();i.src=d.sprites.front_default;p.textContent=`#${d.id} ${d.name} (${d.types.map(t=>t.type.name).join(', ')})`;}catch{p.textContent='Error.';}};b.addEventListener('click',f);f();},
+                profiler:()=>{const w=createWindow('profiler',`<div class="window-content"><div class="profiler-input"><input type="text" placeholder="Enter a name..."><button class="action-button">Analyze</button></div><pre>...</pre></div>`);const i=w.querySelector('input'),b=w.querySelector('button'),p=w.querySelector('pre');b.addEventListener('click',async()=>{const n=i.value.trim();if(!n){p.textContent='Enter a name.';return;}p.textContent='Analyzing...';try{const[ag,ge,na]=await Promise.all([fetch(`https://api.agify.io?name=${n}`),fetch(`https://api.genderize.io?name=${n}`),fetch(`https://api.nationalize.io?name=${n}`)]).then(rs=>Promise.all(rs.map(r=>r.json())));p.textContent=`Profile for: ${n}\n- Age: ${ag.age}\n- Gender: ${ge.gender}\n- Top Country: ${na.country[0].country_id}`;}catch{p.textContent='Error analyzing name.';}});},
+                'hack-tool':()=>{const w=createWindow('hack-tool',`<div class="window-content" style="display:flex;gap:10px;"><img style="width:75px;height:75px;border:1px solid var(--border-dark);"><pre></pre></div>`);const i=w.querySelector('img'),p=w.querySelector('pre');const f=async()=>{i.src='';p.textContent='Bypassing firewall...';try{const r=await fetch('https://randomuser.me/api/'),d=await r.json();const u=d.results[0];i.src=u.picture.large;p.textContent=`TARGET ACQUIRED\nName: ${u.name.first} ${u.name.last}\nAddr: ${u.email}\nLoc: ${u.location.city}, ${u.location.country}`; }catch{p.textContent='Connection failed.';}};f();},
+                'space-cadets':()=>{const w=createWindow('space-cadets',`<div class="window-content"><p>...</p><ul></ul></div>`);const p=w.querySelector('p'),ul=w.querySelector('ul');const f=async()=>{p.textContent='Contacting station...';try{const r=await fetch('https://api.open-notify.org/astros.json'),d=await r.json();p.textContent=`There are ${d.number} humans in space:`;ul.innerHTML=d.people.map(person=>`<li>${person.name}</li>`).join('');}catch{p.textContent='Signal lost.';}};f();},
+                'iss-tracker':()=>{const w=createWindow('iss-tracker',`<div class="window-content"><pre>Acquiring ISS signal...\n\nLatitude: ...\nLongitude: ...</pre></div>`,{height:200});const p=w.querySelector('pre');const f=async()=>{try{const r=await fetch('https://api.open-notify.org/iss-now.json'),d=await r.json();p.textContent=`ISS Signal Locked\n\nLatitude: ${d.iss_position.latitude}\nLongitude: ${d.iss_position.longitude}`;}catch{p.textContent='ISS Signal Lost...';}};const i=setInterval(f,5000);windowRegistry[w.id].cleanup=()=>clearInterval(i);f();}
             });
-            createWindow('boot.log', `<div class="window-content"><p>> useless-os loaded successfully.</p><p>> STATUS: AWAITING_INPUT...</p></div>`, {t: 40, l: 220});
+
+            // APP LAUNCHER & INITIALIZATION
+            const launchApp = (appName) => { startMenu.classList.remove('visible'); if (apps[appName]) apps[appName](); };
+            startMenu.addEventListener('click', (e) => { if (e.target.tagName === 'A' && e.target.dataset.app) { e.preventDefault(); launchApp(e.target.dataset.app); } });
+            document.getElementById('desktop-icons').addEventListener('dblclick', e => { const icon = e.target.closest('.desktop-icon'); if (icon && icon.dataset.app) { launchApp(icon.dataset.app); } });
+            
+            createWindow('boot.log', `<div class="window-content"><p>> useless-os loaded successfully.</p><p>> STATUS: AWAITING_INPUT...</p></div>`, {top: 40, left: 50});
         });
     </script>
 </body>
