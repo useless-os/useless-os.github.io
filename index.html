@@ -10,45 +10,34 @@
         THEME, CURSOR, & ANIMATION DEFINITIONS
         ========================================
         */
-        /* Cursors are intentionally small and pixelated for the retro aesthetic. */
         :root {
             --cursor-default: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAADFJREFUOE9jZKAQMFKon2HAx0B2gI0fNEJo2B40QmjYHjRCA4b9AAb/R4NB/w8G/Z8YnJsBAH8sB6kR0L+9AAAAAElFTkSuQmCC'), auto;
             --cursor-pointer: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAANhJREFUOE/N071KA1EQBuAvbH2A1yJasLC1B3iCV3iEV/AIBrcgWAQfwCJYBGt9gZwVBCuxsBFeQZBLeYhZeE9yOU2WJzmf+S/5JRGZ6Hney4CyjGmM+PMyrck0U4iImG4FzAfieQjKx8AEU8dFeSsmvQYj8P2/mP0+eG8HKYtjsTJeL7SnaS5tQxvA7A12N4vLgFkKso4yFk5kGSUaYyP1cmw3Asa9Gz/ADNg9FnzQ3QdPfSkpQmJ1nA4d/gTvXEcSs8jXy2G3sN3Qwh5j6rNlYAAAAASUVORK5CYII='), pointer;
             --cursor-crosshair: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAB1JREFUOE9jZKAQMFKon2HAx0B2gI0fNEJo2B40Qv8GACPaA/fbs5YPAAAAAElFTkSuQmCC'), crosshair;
         }
-
-        /* Light Theme (Default) */
+        /* Updated Light Theme */
         .theme-light {
-            --bg-main: #e8e8e8; --bg-secondary: #d1d1d1; --text-main: #000000;
+            --bg-main: #ffffff; --bg-secondary: #d1d1d1; --text-main: #000000;
             --border-dark: #000000; --border-light: #444444; --highlight-bg: #000000;
             --highlight-text: #ffffff; --window-title-bg: #b0b0b0; --window-title-text: #000000;
-            --input-bg: #f0f0f0; --op-button-bg: #c0c0c0;
+            --input-bg: #f0f0f0; --op-button-bg: #c0c0c0; --graph-color: #000000;
         }
-
-        /* Refined Cream Theme */
         .theme-cream {
             --bg-main: #e9e2d5; --bg-secondary: #d3c9b8; --text-main: #4a4132;
             --border-dark: #4a4132; --border-light: #8b7e6a; --highlight-bg: #4a4132;
             --highlight-text: #e9e2d5; --window-title-bg: #bdae98; --window-title-text: #4a4132;
-            --input-bg: #f5efe2; --op-button-bg: #c2b6a3;
+            --input-bg: #f5efe2; --op-button-bg: #c2b6a3; --graph-color: #4a4132;
         }
-
-        /* Refined Dark Theme */
         .theme-dark {
             --bg-main: #1e1e1e; --bg-secondary: #2d2d2d; --text-main: #d4d4d4;
             --border-dark: #cccccc; --border-light: #666666; --highlight-bg: #d4d4d4;
             --highlight-text: #1e1e1e; --window-title-bg: #444444; --window-title-text: #d4d4d4;
-            --input-bg: #252526; --op-button-bg: #3e3e3e;
+            --input-bg: #252526; --op-button-bg: #3e3e3e; --graph-color: #d4d4d4;
         }
-        
         @keyframes blink { 50% { opacity: 0; } }
         .blinking-cursor { animation: blink 1s step-end infinite; }
         
-        /*
-        ========================================
-        GLOBAL & CORE UI STYLES
-        ========================================
-        */
+        /* GLOBAL & CORE UI */
         * { box-sizing: border-box; border-radius: 0 !important; }
         html, body {
             margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
@@ -58,83 +47,41 @@
             user-select: none; cursor: var(--cursor-default);
         }
         button, input, select, textarea { font-family: inherit; color: inherit; }
-        button, input[type=color], select, .task-item, #start-button, .files-list div, .clickable { cursor: var(--cursor-pointer); }
-        .action-button {
-             padding: 8px 12px; border: 1px solid var(--border-dark);
-             background-color: var(--bg-secondary);
-        }
+        button, input[type=color], select, .task-item, #start-button, .files-list div, .clickable, .wikiexplorer-result a { cursor: var(--cursor-pointer); }
+        .action-button { padding: 8px 12px; border: 1px solid var(--border-dark); background-color: var(--bg-secondary); }
         .action-button:hover { background-color: var(--op-button-bg); }
         .action-button:active { background-color: var(--highlight-bg); color: var(--highlight-text); }
-        input[type=text] {
-            border: 1px solid var(--border-light); background: var(--input-bg);
-            padding: 5px; color: var(--text-main); width: 100%;
-        }
-
-        /*
-        ========================================
-        TASKBAR & START MENU
-        ========================================
-        */
-        #taskbar {
-            position: fixed; bottom: 0; left: 0; right: 0; height: 32px;
-            background-color: var(--bg-secondary); border-top: 1px solid var(--border-dark);
-            display: flex; align-items: center; padding: 0 5px; z-index: 10000;
-        }
-        #start-button {
-            padding: 4px 10px; border: 1px solid var(--border-light);
-            background-color: var(--bg-secondary); font-weight: bold;
-        }
+        
+        /* TASKBAR & START MENU */
+        #taskbar { position: fixed; bottom: 0; left: 0; right: 0; height: 32px; background-color: var(--bg-secondary); border-top: 1px solid var(--border-dark); display: flex; align-items: center; padding: 0 5px; z-index: 10000; }
+        #start-button { padding: 4px 10px; border: 1px solid var(--border-light); background-color: var(--bg-secondary); font-weight: bold; }
         #start-button:active { border-color: var(--border-dark); background-color: var(--highlight-bg); color: var(--highlight-text); }
         #task-items { display: flex; height: 100%; flex-grow: 1; margin-left: 5px; overflow: hidden; }
-        .task-item {
-            border: 1px solid var(--border-light); padding: 0 10px; margin: 3px 2px;
-            max-width: 150px; white-space: nowrap; overflow: hidden;
-            text-overflow: ellipsis; line-height: 24px;
-        }
+        .task-item { border: 1px solid var(--border-light); padding: 0 10px; margin: 3px 2px; max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 24px; }
         .task-item.active { background-color: var(--highlight-bg); color: var(--highlight-text); border-color: var(--border-dark); }
         #taskbar-clock { margin-left: auto; padding: 4px 10px; border-left: 1px solid var(--border-light); border-right: 1px solid var(--border-light); flex-shrink: 0; }
-        #start-menu {
-            display: none; position: fixed; bottom: 32px; left: 0; width: 220px;
-            background-color: var(--bg-secondary); border: 1px solid var(--border-dark);
-            border-bottom: none; z-index: 9999; padding: 5px 0;
-        }
+        #start-menu { display: none; position: fixed; bottom: 32px; left: 0; width: 220px; background-color: var(--bg-secondary); border: 1px solid var(--border-dark); border-bottom: none; z-index: 9999; padding: 5px 0; }
         #start-menu.visible { display: block; }
         #start-menu ul { list-style: none; margin: 0; padding: 0; }
         #start-menu li a { display: block; padding: 8px 15px; text-decoration: none; color: var(--text-main); }
         #start-menu li a:hover { background-color: var(--highlight-bg); color: var(--highlight-text); }
         #start-menu .divider { height: 1px; background-color: var(--border-light); margin: 5px 0; }
 
-        /*
-        ========================================
-        WINDOW & APP-SPECIFIC STYLES
-        ========================================
-        */
-        .window {
-            position: absolute; display: flex; flex-direction: column;
-            width: 450px; height: 300px; min-width: 250px; min-height: 150px;
-            background-color: var(--bg-main); border: 1px solid var(--border-dark);
-            box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.2); resize: both; overflow: hidden;
-        }
+        /* WINDOW & APP STYLES */
+        .window { position: absolute; display: flex; flex-direction: column; width: 450px; height: 300px; min-width: 250px; min-height: 150px; background-color: var(--bg-main); border: 1px solid var(--border-dark); box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.2); resize: both; overflow: hidden; }
         .window:focus-within { z-index: 1000 !important; }
-        .window .title-bar {
-            background-color: var(--window-title-bg); padding: 5px 8px; cursor: move;
-            display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid var(--border-dark); flex-shrink: 0;
-        }
+        .window .title-bar { background-color: var(--window-title-bg); padding: 5px 8px; cursor: move; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-dark); flex-shrink: 0; }
         .window .title-bar .title { font-weight: bold; color: var(--window-title-text); }
-        .window .window-controls button {
-            width: 20px; height: 20px; border: 1px solid var(--border-dark);
-            background-color: var(--bg-secondary); margin-left: 3px;
-            font-family: monospace; font-size: 12px; line-height: 1; padding: 0;
-        }
-        .window .window-controls button:active { background-color: #a0a0a0; }
-        .window-content { padding: 15px; flex-grow: 1; overflow: auto; cursor: var(--cursor-default); }
-        
+        .window .window-controls button { width: 20px; height: 20px; border: 1px solid var(--border-dark); background-color: var(--bg-secondary); margin-left: 3px; font-family: monospace; font-size: 12px; line-height: 1; padding: 0; }
+        .window-content { padding: 15px; flex-grow: 1; overflow: auto; cursor: var(--cursor-default); user-select: text; /* Enable text selection in windows */ }
+        .window-content-nopad { padding: 0 !important; overflow: hidden; user-select: none; }
+        iframe { width: 100%; height: 100%; border: none; background: #000; }
+        canvas { display: block; width: 100%; height: 100%; background: var(--input-bg); }
         textarea { background: var(--input-bg); border: 1px solid var(--border-light); color: var(--text-main); width: 100%; height: 100%; resize: none; padding: 5px; }
         pre { white-space: pre; word-wrap: break-word; margin: 0; }
         
         .calculator { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
-        .calculator .display { grid-column: 1 / -1; background: var(--input-bg); text-align: right; padding: 10px; font-size: 20px; border: 1px solid var(--border-light); overflow: hidden; text-overflow: ellipsis; }
+        .calculator .display { grid-column: 1 / -1; background: var(--input-bg); text-align: right; padding: 10px; font-size: 20px; border: 1px solid var(--border-light); }
         .calculator button { padding: 15px; font-size: 16px; border: 1px solid var(--border-light); background-color: var(--bg-secondary); }
         .calculator button.op { background-color: var(--op-button-bg); }
 
@@ -142,15 +89,15 @@
         .paint-app canvas { border: 1px solid var(--border-dark); cursor: var(--cursor-crosshair); image-rendering: pixelated; }
         
         .files-list { height: 100%; padding: 5px; overflow-y: auto; background: var(--input-bg); border: 1px solid var(--border-light); }
-        .files-list div { padding: 2px 5px; }
         .files-list div:hover { background-color: var(--highlight-bg); color: var(--highlight-text); }
         
-        .terminal-app { display: flex; flex-direction: column; height: 100%; padding: 0 !important; background: var(--input-bg); }
+        .terminal-app { display: flex; flex-direction: column; height: 100%; background: var(--input-bg); }
         .terminal-output { flex-grow: 1; padding: 10px; overflow-y: auto; white-space: pre-wrap; }
-        .terminal-input-line { display: flex; border-top: 1px solid var(--border-light); flex-shrink: 0; }
+        .terminal-input-line { display: flex; border-top: 1px solid var(--border-light); flex-shrink: 0; align-items: center; }
         .terminal-input-line:focus-within { background: rgba(0,0,0,0.1); }
         .terminal-input-line span { padding: 5px; }
         .terminal-input { flex-grow: 1; border: none; background: transparent; color: var(--text-main); padding: 5px; outline: none; }
+        .wikiexplorer-result a { color: inherit; text-decoration: none; } /* Minimal link styling */
     </style>
 </head>
 <body class="theme-light">
@@ -168,11 +115,19 @@
             <li><a data-app="terminal">Terminal</a></li>
             <li><a data-app="calculator">Calculator</a></li>
             <li><a data-app="paint">Glimpse-Paint</a></li>
-            <li><a data-app="wikiexplorer">Web-Get</a></li>
             <li class="divider"></li>
             <li><a data-app="files">File Manager</a></li>
             <li><a data-app="notepad">Text Editor</a></li>
+            <li><a data-app="wikiexplorer">Web-Get</a></li>
+            <li class="divider"></li>
+            <li><a data-app="procs">procs</a></li>
+            <li><a data-app="netmon">netmon</a></li>
+            <li><a data-app="df">df</a></li>
+            <li class="divider"></li>
             <li><a data-app="ansiart">ASCII-View</a></li>
+            <li><a data-app="demoview">demoview</a></li>
+            <li><a data-app="arenaViz">arena-viz</a></li>
+            <li><a data-app="minAudioViz">min-audio-viz</a></li>
             <li class="divider"></li>
             <li><a data-app="settings">Settings</a></li>
             <li><a href="javascript:void(0)" onclick="alert('Close the tab to shutdown.');">Shutdown...</a></li>
@@ -181,7 +136,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-
             const desktop = document.getElementById('desktop');
             const startButton = document.getElementById('start-button');
             const startMenu = document.getElementById('start-menu');
@@ -192,9 +146,7 @@
             let zIndexCounter = 1;
             const windowRegistry = {};
 
-            // ========================================
             // CORE UI & WINDOW MANAGEMENT
-            // ========================================
             startButton.addEventListener('click', e => { e.stopPropagation(); startMenu.classList.toggle('visible'); });
             document.addEventListener('click', () => startMenu.classList.remove('visible'));
             setInterval(() => { clockElement.textContent = new Date().toLocaleTimeString('en-GB'); }, 1000);
@@ -209,6 +161,7 @@
             const closeWindow = (id) => {
                 const winData = windowRegistry[id];
                 if (winData) {
+                    if (winData.cleanup) winData.cleanup();
                     winData.windowEl.remove();
                     winData.taskItem.remove();
                     delete windowRegistry[id];
@@ -220,72 +173,70 @@
                 let isDragging = false, offsetX, offsetY;
                 const startDrag = e => {
                     isDragging = true;
-                    offsetX = e.clientX - windowEl.offsetLeft;
-                    offsetY = e.clientY - windowEl.offsetTop;
+                    const touch = e.touches ? e.touches[0] : null;
+                    offsetX = (touch ? touch.clientX : e.clientX) - windowEl.offsetLeft;
+                    offsetY = (touch ? touch.clientY : e.clientY) - windowEl.offsetTop;
                     bringToFront(windowEl);
                 };
                 const drag = e => {
                     if (!isDragging) return;
-                    let newX = e.clientX - offsetX;
-                    let newY = e.clientY - offsetY;
-                    
+                    e.preventDefault();
+                    const touch = e.touches ? e.touches[0] : null;
+                    let newX = (touch ? touch.clientX : e.clientX) - offsetX;
+                    let newY = (touch ? touch.clientY : e.clientY) - offsetY;
                     newX = Math.max(0, Math.min(newX, window.innerWidth - windowEl.offsetWidth));
                     newY = Math.max(0, Math.min(newY, window.innerHeight - windowEl.offsetHeight - 32));
-
-                    windowEl.style.left = `${newX}px`;
-                    windowEl.style.top = `${newY}px`;
+                    windowEl.style.left = `${newX}px`; windowEl.style.top = `${newY}px`;
                 };
                 const stopDrag = () => { isDragging = false; };
                 titleBar.addEventListener('mousedown', startDrag);
                 document.addEventListener('mousemove', drag);
                 document.addEventListener('mouseup', stopDrag);
+                titleBar.addEventListener('touchstart', startDrag, { passive: false });
+                document.addEventListener('touchmove', drag, { passive: false });
+                document.addEventListener('touchend', stopDrag);
                 windowEl.addEventListener('mousedown', () => bringToFront(windowEl));
+                windowEl.addEventListener('touchstart', () => bringToFront(windowEl));
             };
 
             const createWindow = (title, contentHTML, options = {}) => {
                 windowIdCounter++;
                 const id = `window-${windowIdCounter}`;
                 const newWindow = document.createElement('div');
-                newWindow.className = 'window'; newWindow.id = id;
-                newWindow.tabIndex = -1; // Make window focusable for key events
+                newWindow.className = 'window'; newWindow.id = id; newWindow.tabIndex = -1;
                 const { width = 450, height = 300, top = 60, left = 100 } = options;
                 newWindow.style.width = `${width}px`; newWindow.style.height = `${height}px`;
                 newWindow.style.top = `${top + (windowIdCounter % 10) * 20}px`;
                 newWindow.style.left = `${left + (windowIdCounter % 10) * 20}px`;
-
-                newWindow.innerHTML = `
-                    <div class="title-bar"><span class="title">${title}</span><div class="window-controls"><button class="window-control-close">X</button></div></div>
-                    <div class="window-content">${contentHTML}</div>`;
-                
+                newWindow.innerHTML = `<div class="title-bar"><span class="title">${title}</span><div class="window-controls"><button class="window-control-close">X</button></div></div>${contentHTML}`;
                 desktop.appendChild(newWindow);
-                
                 const taskItem = document.createElement('div');
                 taskItem.className = 'task-item'; taskItem.textContent = title;
                 taskItem.addEventListener('click', () => bringToFront(newWindow));
                 taskItemsContainer.appendChild(taskItem);
-
-                windowRegistry[id] = { windowEl: newWindow, taskItem: taskItem, close: () => closeWindow(id) };
-                
-                newWindow.querySelector('.window-control-close').addEventListener('click', windowRegistry[id].close);
-
+                windowRegistry[id] = { windowEl: newWindow, taskItem: taskItem };
+                newWindow.querySelector('.window-control-close').addEventListener('click', () => closeWindow(id));
                 makeDraggable(newWindow); bringToFront(newWindow);
                 return newWindow;
             };
 
-            // ========================================
             // APPLICATION DEFINITIONS
-            // ========================================
             const apps = {
-                notepad: () => createWindow('Text Editor', `<textarea spellcheck="false"></textarea>`),
+                notepad: (initialContent = '') => {
+                    const win = createWindow('Text Editor', `<div class="window-content"><textarea spellcheck="false"></textarea></div>`);
+                    const textarea = win.querySelector('textarea');
+                    textarea.value = initialContent;
+                    if (win.querySelector('.title-bar .title').textContent === 'notes.txt') {
+                        textarea.addEventListener('input', () => { localStorage.setItem('useless-os-notes.txt', textarea.value); });
+                    }
+                },
                 settings: () => {
-                    const content = `<p>Select system theme:</p>
+                    const content = `<div class="window-content"><p>Select system theme:</p>
                         <button class="action-button" data-theme="theme-light">Light</button>
                         <button class="action-button" data-theme="theme-cream">Cream</button>
-                        <button class="action-button" data-theme="theme-dark">Dark</button>`;
+                        <button class="action-button" data-theme="theme-dark">Dark</button></div>`;
                     const win = createWindow('Settings', content, {width: 350, height: 180});
-                    win.querySelectorAll('[data-theme]').forEach(btn => {
-                        btn.addEventListener('click', () => document.body.className = btn.dataset.theme);
-                    });
+                    win.querySelectorAll('[data-theme]').forEach(btn => btn.addEventListener('click', () => document.body.className = btn.dataset.theme));
                 },
                 ansiart: () => {
                     const arts = [`<pre>
@@ -307,155 +258,149 @@
   /\\ \\
  //\\\\</pre>`];
                     let currentArt = 0;
-                    const win = createWindow('ASCII-View', arts[0], {width: 300, height: 280});
-                    win.querySelector('.window-content').classList.add('clickable');
+                    const win = createWindow('ASCII-View', `<div class="window-content clickable">${arts[0]}</div>`, {width: 300, height: 280});
                     win.querySelector('.window-content').addEventListener('click', () => {
                         currentArt = (currentArt + 1) % arts.length;
                         win.querySelector('.window-content').innerHTML = arts[currentArt];
                     });
                 },
                 wikiexplorer: () => {
-                    const content = `<p>Fetch random summary from Wikipedia.</p>
-                        <button class="action-button" id="fetch-wiki-btn-${windowIdCounter+1}">[ GET ]</button>
-                        <div id="wiki-result-${windowIdCounter+1}" style="margin-top:10px; border:1px solid var(--border-light); background:var(--input-bg); padding:10px; min-height:100px;">Awaiting...</div>`;
+                    const content = `<div class="window-content">
+                        <p>Fetch random summary from Wikipedia.</p>
+                        <button class="action-button">[ GET NEW ]</button>
+                        <div class="wikiexplorer-result" style="margin-top:10px; border:1px solid var(--border-light); background:var(--input-bg); padding:10px; min-height:100px;">Awaiting...</div>
+                    </div>`;
                     const win = createWindow('Web-Get', content);
-                    const btn = win.querySelector(`#fetch-wiki-btn-${windowIdCounter}`);
-                    const resultDiv = win.querySelector(`#wiki-result-${windowIdCounter}`);
-                    btn.addEventListener('click', async () => {
+                    const btn = win.querySelector('.action-button');
+                    const resultDiv = win.querySelector('.wikiexplorer-result');
+                    const fetchWiki = async () => {
                         resultDiv.innerHTML = '<i>Fetching...</i>';
                         try {
                             const r = await fetch('https://en.wikipedia.org/api/rest_v1/page/random/summary');
                             if (!r.ok) throw new Error(`Network Error: ${r.status}`);
                             const d = await r.json();
-                            resultDiv.innerHTML = `<p><strong>${d.title}</strong></p><p>${d.extract}</p>`;
+                            resultDiv.innerHTML = `<p><strong><a href="${d.content_urls.desktop.page}" target="_blank" rel="noopener noreferrer">${d.title}</a></strong></p><p>${d.extract}</p>`;
                         } catch (e) { resultDiv.innerHTML = `<p><strong>ERROR:</strong></p><pre>${e.message}</pre>`; }
-                    });
+                    };
+                    btn.addEventListener('click', fetchWiki);
+                    fetchWiki();
                 },
                 calculator: () => {
-                    const content = `<div class="calculator"><div class="display">0</div>
+                    const content = `<div class="window-content"><div class="calculator"><div class="display">0</div>
                         <button>7</button><button>8</button><button>9</button><button class="op">/</button>
                         <button>4</button><button>5</button><button>6</button><button class="op">*</button>
                         <button>1</button><button>2</button><button>3</button><button class="op">-</button>
-                        <button>C</button><button>0</button><button>=</button><button class="op">+</button></div>`;
+                        <button>C</button><button>0</button><button>=</button><button class="op">+</button></div></div>`;
                     const win = createWindow('Calculator', content, {width: 280, height: 350});
                     const display = win.querySelector('.display');
                     let current = '0', error = false;
-
                     const handleInput = (val) => {
                         if (error && val !== 'C') { current = '0'; error = false; }
-                        
                         if (val === 'C') { current = '0'; }
-                        else if (val === '=') { 
-                            try { current = String(eval(current.replace(/[^-()\d/*+.]/g, ''))); } 
-                            catch { current = 'Error'; error = true; }
-                        } else {
-                            current = (current === '0') ? val : current + val;
-                        }
+                        else if (val === '=') { try { current = String(eval(current.replace(/[^-()\d/*+.]/g, ''))); } catch { current = 'Error'; error = true; } }
+                        else { current = (current === '0') ? val : current + val; }
                         display.textContent = current;
                     };
-
-                    win.querySelector('.calculator').addEventListener('click', e => {
-                        if (e.target.tagName === 'BUTTON') handleInput(e.target.textContent);
-                    });
+                    win.querySelector('.calculator').addEventListener('click', e => { if (e.target.tagName === 'BUTTON') handleInput(e.target.textContent); });
                     win.addEventListener('keydown', e => {
                         e.preventDefault();
                         if (e.key.match(/^[0-9\+\-\*\/]$/)) handleInput(e.key);
                         if (e.key === 'Enter') handleInput('=');
-                        if (e.key === 'Backspace' || e.key === 'Delete' || e.key.toLowerCase() === 'c') handleInput('C');
+                        if (e.key === 'Backspace' || e.key.toLowerCase() === 'c') handleInput('C');
                     });
                 },
                 paint: () => {
-                    const content = `<div class="paint-app"><div class="toolbar">
-                        Color: <input type="color" value="#000000">
-                        Brush: <button data-size="2">S</button><button data-size="5">M</button><button data-size="10">L</button>
-                        </div><canvas></canvas></div>`;
+                    const content = `<div class="window-content"><div class="paint-app"><div class="toolbar">
+                        Color: <input type="color" value="#000000"> Brush: <button data-size="2">S</button><button data-size="5">M</button><button data-size="10">L</button>
+                        </div><canvas></canvas></div></div>`;
                     const win = createWindow('Glimpse-Paint', content, {width: 500, height: 400});
                     const canvas = win.querySelector(`canvas`);
-                    const colorPicker = win.querySelector(`input[type=color]`);
                     const ctx = canvas.getContext('2d');
                     let brushSize = 2;
-                    new ResizeObserver(() => {
-                        canvas.width = win.querySelector('.window-content').clientWidth - 30;
-                        canvas.height = win.querySelector('.window-content').clientHeight - 60;
-                    }).observe(win.querySelector('.window-content'));
-                    
+                    new ResizeObserver(() => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; }).observe(canvas);
                     let painting = false;
-                    const draw = e => {
-                        if (!painting) return;
-                        ctx.lineWidth = brushSize; ctx.lineCap = 'butt';
-                        ctx.strokeStyle = colorPicker.value;
-                        ctx.lineTo(e.offsetX, e.offsetY); ctx.stroke(); ctx.beginPath(); ctx.moveTo(e.offsetX, e.offsetY);
-                    };
+                    const draw = e => { if (!painting) return; ctx.lineWidth = brushSize; ctx.lineCap = 'butt'; ctx.strokeStyle = win.querySelector('input[type=color]').value; ctx.lineTo(e.offsetX, e.offsetY); ctx.stroke(); ctx.beginPath(); ctx.moveTo(e.offsetX, e.offsetY); };
                     canvas.addEventListener('mousedown', e => { painting = true; draw(e); });
                     canvas.addEventListener('mouseup', () => { painting = false; ctx.beginPath(); });
                     canvas.addEventListener('mousemove', draw);
-                    win.querySelector('.toolbar').addEventListener('click', e => {
-                        if(e.target.dataset.size) brushSize = e.target.dataset.size;
-                    });
+                    win.querySelector('.toolbar').addEventListener('click', e => { if(e.target.dataset.size) brushSize = e.target.dataset.size; });
                 },
                 files: () => {
-                    const content = `<div class="files-list"><div>/</div><div>  [D] bin</div><div>  [D] etc</div><div>  [D] home</div><div>    [D] guest</div>
-                        <div>      [F] .profile</div><div>      [F] todo.txt</div><div>  [D] root</div><div>  [D] var</div></div>`;
-                    createWindow('File Manager', content, {width: 350});
+                    const content = `<div class="window-content"><div class="files-list"><div>/</div><div>  [D] bin</div><div>  [D] home</div><div>    [D] guest</div>
+                        <div class="clickable" data-action="open-file" data-filename="notes.txt">      [F] notes.txt</div><div>  [D] var</div></div></div>`;
+                    const win = createWindow('File Manager', content, {width: 350});
+                    win.querySelector('.files-list').addEventListener('click', e => {
+                        const target = e.target;
+                        if (target.dataset.action === 'open-file' && target.dataset.filename === 'notes.txt') {
+                            const noteWin = apps.notepad(localStorage.getItem('useless-os-notes.txt') || '');
+                            noteWin.querySelector('.title-bar .title').textContent = 'notes.txt';
+                        }
+                    });
                 },
                 terminal: () => {
-                    const id = windowIdCounter + 1;
-                    const content = `<div class="terminal-app">
-                        <div class="terminal-output" id="term-out-${id}"></div>
-                        <div class="terminal-input-line" onclick="this.querySelector('input').focus()">
-                            <span>></span>
-                            <input type="text" class="terminal-input" id="term-in-${id}" spellcheck="false" autocomplete="off">
-                            <span class="blinking-cursor">_</span>
-                        </div></div>`;
+                    const content = `<div class="window-content window-content-nopad"><div class="terminal-app"><pre class="terminal-output"></pre>
+                        <div class="terminal-input-line" onclick="this.querySelector('input').focus()"><span>></span><input type="text" spellcheck="false" autocomplete="off"><span class="blinking-cursor">_</span></div></div></div>`;
                     const win = createWindow('Terminal', content);
-                    const output = win.querySelector(`#term-out-${id}`);
-                    const input = win.querySelector(`#term-in-${id}`);
+                    const output = win.querySelector('pre');
+                    const input = win.querySelector('input');
                     const log = msg => { output.textContent += msg + '\n'; output.scrollTop = output.scrollHeight; };
-                    
                     const commands = {
                         help: () => log('Commands: help, ls, whoami, pwd, neofetch, echo, clear, exit'),
-                        ls: () => log('bin\t etc\t home\t root\t var'),
-                        whoami: () => log('guest'),
-                        pwd: () => log('/home/guest'),
-                        neofetch: () => log(`
-    guest@useless-os
-    -----------------
-    OS: useless-os
-    Kernel: 1.0.0-web
-    Shell: term.js
-    Resolution: ${window.innerWidth}x${window.innerHeight}
-                        `),
+                        ls: () => log('bin\t home\t var'),
+                        whoami: () => log('guest'), pwd: () => log('/home/guest'),
+                        neofetch: () => log(`    guest@useless-os\n    -----------------\n    OS: useless-os\n    Kernel: 1.0.0-web\n    Shell: term.js`),
                         echo: (args) => log(args.join(' ')),
                         clear: () => { output.textContent = ''; },
-                        exit: () => { windowRegistry[win.id].close(); }
+                        exit: () => closeWindow(win.id)
                     };
-                    
                     log('useless-os Terminal. Type "help" for commands.');
                     input.addEventListener('keydown', e => {
                         if (e.key !== 'Enter' || !input.value) return;
-                        const fullCmd = input.value.trim();
-                        const [cmd, ...args] = fullCmd.toLowerCase().split(' ');
+                        const fullCmd = input.value.trim(), [cmd, ...args] = fullCmd.toLowerCase().split(' ');
                         log(`> ${fullCmd}`);
-                        if (commands[cmd]) { commands[cmd](args); }
-                        else if (cmd) { log(`command not found: ${cmd}`); }
+                        if (commands[cmd]) { commands[cmd](args); } else if (cmd) { log(`command not found: ${cmd}`); }
                         input.value = '';
                     });
                 },
+                procs: () => {
+                    const content = `<div class="window-content window-content-nopad"><pre></pre></div>`;
+                    const win = createWindow('procs', content, {width: 500, height: 400});
+                    const pre = win.querySelector('pre');
+                    const processes = ["kernel_task", "init", "systemd", "udevd", "cron", "sshd", "login", "bash", "procs"];
+                    const update = () => { let text = "PID   CPU%  MEM   COMMAND\n"; processes.forEach((p,i)=>{text+=`${(101+i*3).toString().padEnd(6)}${(Math.random()*(p==='procs'?5:1)).toFixed(1).padEnd(6)}${(Math.random()*200).toFixed(0).padEnd(6)}${p}\n`}); pre.textContent=text; };
+                    const intervalId = setInterval(update, 1500); windowRegistry[win.id].cleanup = () => clearInterval(intervalId); update();
+                },
+                df: () => {
+                    createWindow('df', `<div class="window-content"><pre>Filesystem    Size   Used  Avail  Use%\n/dev/sda1     100G    75G    25G   75% [███████████████-----]\n/dev/memfs     1G   100M   900M   10% [██------------------]</pre></div>`, {width: 450, height: 180});
+                },
+                demoview: () => {
+                    const win = createWindow('demoview', `<div class="window-content window-content-nopad"><canvas></canvas></div>`);
+                    const canvas = win.querySelector('canvas'); const ctx = canvas.getContext('2d'); let shapes = [], animationId;
+                    const resize = () => { canvas.width=canvas.offsetWidth;canvas.height=canvas.offsetHeight;shapes=[];for(let i=0;i<10;i++)shapes.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,s:Math.random()*15+5,dx:(Math.random()-0.5)*2,dy:(Math.random()-0.5)*2,t:Math.random()>0.5?'r':'l'});};
+                    const animate = () => { ctx.clearRect(0,0,canvas.width,canvas.height);shapes.forEach(s=>{s.x+=s.dx;s.y+=s.dy;if(s.x<0||s.x>canvas.width-s.s)s.dx*=-1;if(s.y<0||s.y>canvas.height-s.s)s.dy*=-1;ctx.strokeStyle=ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--text-main');if(s.t==='r')ctx.strokeRect(s.x,s.y,s.s,s.s);else{ctx.beginPath();ctx.moveTo(s.x,s.y);ctx.lineTo(s.x+s.s,s.y+s.s);ctx.stroke();}}); animationId=requestAnimationFrame(animate);};
+                    new ResizeObserver(resize).observe(canvas); resize(); animate(); windowRegistry[win.id].cleanup=()=>cancelAnimationFrame(animationId);
+                },
+                netmon: () => {
+                    const win = createWindow('netmon', `<div class="window-content window-content-nopad"><canvas></canvas></div>`, {width:400,height:200});
+                    const canvas = win.querySelector('canvas'); const ctx = canvas.getContext('2d'); let data=Array(100).fill(0),intervalId;
+                    const update = () => { data.shift();data.push(Math.random()*canvas.height);ctx.clearRect(0,0,canvas.width,canvas.height);ctx.beginPath();ctx.strokeStyle=getComputedStyle(document.body).getPropertyValue('--graph-color');data.forEach((d,i)=>ctx.lineTo(i*(canvas.width/100),canvas.height-d));ctx.stroke();};
+                    new ResizeObserver(()=>{canvas.width=canvas.offsetWidth;canvas.height=canvas.offsetHeight;}).observe(canvas);update();intervalId=setInterval(update,100);windowRegistry[win.id].cleanup=()=>clearInterval(intervalId);
+                },
+                arenaViz: () => {
+                    createWindow('arena-viz', `<div class="window-content window-content-nopad"><iframe src="https://arena-visualizer.github.io"></iframe></div>`, {width:640,height:480});
+                },
+                minAudioViz: () => {
+                    createWindow('min-audio-viz', `<div class="window-content window-content-nopad"><iframe src="https://minimal-audio-visualizer.github.io"></iframe></div>`, {width:640,height:480});
+                }
             };
 
-            // ========================================
             // APP LAUNCHER & INITIALIZATION
-            // ========================================
             startMenu.addEventListener('click', (e) => {
                 const appName = e.target.dataset.app;
-                if (e.target.tagName === 'A' && appName) {
-                    e.preventDefault();
-                    startMenu.classList.remove('visible');
-                    if (apps[appName]) apps[appName]();
-                }
+                if (e.target.tagName === 'A' && appName) { e.preventDefault(); startMenu.classList.remove('visible'); if (apps[appName]) apps[appName](); }
             });
             
-            createWindow('boot.log', '<p>> useless-os loaded successfully.</p><p>> STATUS: AWAITING_INPUT...</p>', {top: 40, left: 50});
+            createWindow('boot.log', `<div class="window-content"><p>> useless-os loaded successfully.</p><p>> STATUS: AWAITING_INPUT...</p></div>`, {top: 40, left: 50});
         });
     </script>
 </body>
