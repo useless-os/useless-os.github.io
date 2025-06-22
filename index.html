@@ -70,11 +70,12 @@
         #start-menu ul { list-style: none; margin: 0; padding: 0; }
         #start-menu > ul > li { position: relative; }
         #start-menu a, #start-menu .submenu-label { display: block; padding: 8px 15px; text-decoration: none; color: var(--text-main); position: relative;}
-        #start-menu a:hover, #start-menu li:hover > .submenu-label { background-color: var(--highlight-bg); color: var(--highlight-text); }
+        #start-menu a:hover, #start-menu .submenu-label:hover { background-color: var(--highlight-bg); color: var(--highlight-text); }
         #start-menu .submenu-label::after { content: '>'; position: absolute; right: 15px; }
         .submenu { display: none; position: absolute; left: 100%; width: 220px; background-color: var(--bg-secondary); border: 1px solid var(--border-dark); padding: 5px 0; }
-        .submenu.open-down { top: -6px; } /* -6 to align with parent padding */
+        .submenu.open-down { top: -6px; }
         .submenu.open-up { bottom: -6px; }
+        #start-menu .has-submenu:hover > .submenu { display: block; }
         #start-menu .divider { height: 1px; background-color: var(--border-light); margin: 5px 0; }
 
         /* WINDOW & APP STYLES */
@@ -186,7 +187,6 @@
             document.addEventListener('click', () => startMenu.classList.remove('visible'));
             setInterval(() => { clockElement.textContent = new Date().toLocaleTimeString('en-GB'); }, 1000);
 
-            // START MENU SUBMENU FIX
             startMenu.querySelectorAll('.has-submenu').forEach(item => {
                 const submenu = item.querySelector('.submenu');
                 item.addEventListener('mouseenter', () => {
@@ -198,10 +198,6 @@
                     } else {
                         submenu.classList.add('open-down');
                     }
-                    submenu.style.display = 'block';
-                });
-                item.addEventListener('mouseleave', () => {
-                    submenu.style.display = 'none';
                 });
             });
 
@@ -276,90 +272,33 @@
 
             // APPLICATION DEFINITIONS
             const apps = {
-                // FIXED CALCULATOR
+                // RESTORED CALCULATOR
                 calculator: () => {
-                    const content = `<div class="window-content window-content-nopad"><div class="calculator"><div class="display"></div>
+                    const content = `<div class="window-content"><div class="calculator"><div class="display">0</div>
                         <button>7</button><button>8</button><button>9</button><button class="op">/</button>
                         <button>4</button><button>5</button><button>6</button><button class="op">*</button>
                         <button>1</button><button>2</button><button>3</button><button class="op">-</button>
-                        <button>C</button><button>0</button><button class="op">=</button><button class="op">+</button></div></div>`;
+                        <button>C</button><button>0</button><button>=</button><button class="op">+</button></div></div>`;
                     const win = createWindow('Calculator', content, {width: 280, height: 350});
                     const display = win.querySelector('.display');
-                    let currentOperand = '', previousOperand = '', operation = undefined;
-
-                    const updateDisplay = () => { display.textContent = currentOperand || previousOperand || '0'; };
-                    const clear = () => { currentOperand = ''; previousOperand = ''; operation = undefined; };
-                    const appendNumber = (number) => { if (number === '.' && currentOperand.includes('.')) return; currentOperand = currentOperand.toString() + number.toString(); };
-                    const chooseOperation = (op) => {
-                        if (currentOperand === '') return;
-                        if (previousOperand !== '') compute();
-                        operation = op; previousOperand = currentOperand; currentOperand = '';
+                    let current = '0', error = false;
+                    const handleInput = (val) => {
+                        if (error && val !== 'C') { current = '0'; error = false; }
+                        if (val === 'C') { current = '0'; }
+                        else if (val === '=') { try { current = String(eval(current.replace(/[^-()\d/*+.]/g, ''))); } catch { current = 'Error'; error = true; } }
+                        else { current = (current === '0') ? val : current + val; }
+                        display.textContent = current;
                     };
-                    const compute = () => {
-                        let computation;
-                        const prev = parseFloat(previousOperand), current = parseFloat(currentOperand);
-                        if (isNaN(prev) || isNaN(current)) return;
-                        switch (operation) {
-                            case '+': computation = prev + current; break;
-                            case '-': computation = prev - current; break;
-                            case '*': computation = prev * current; break;
-                            case '/': computation = prev / current; break;
-                            default: return;
-                        }
-                        currentOperand = computation; operation = undefined; previousOperand = '';
-                    };
-                    
-                    win.querySelectorAll('button').forEach(button => {
-                        button.addEventListener('click', () => {
-                            if (!isNaN(button.innerText) || button.innerText === '.') appendNumber(button.innerText);
-                            else if (button.innerText === 'C') clear();
-                            else if (button.innerText === '=') compute();
-                            else chooseOperation(button.innerText);
-                            updateDisplay();
-                        });
-                    });
+                    win.querySelector('.calculator').addEventListener('click', e => { if (e.target.tagName === 'BUTTON') handleInput(e.target.textContent); });
                     win.addEventListener('keydown', e => {
                         e.preventDefault();
-                        if (!isNaN(e.key) || e.key === '.') appendNumber(e.key);
-                        else if (e.key === 'Backspace' || e.key.toLowerCase() === 'c') clear();
-                        else if (e.key === 'Enter' || e.key === '=') compute();
-                        else if (['+', '-', '*', '/'].includes(e.key)) chooseOperation(e.key);
-                        updateDisplay();
+                        if (e.key.match(/^[0-9\.\+\-\*\/]$/)) handleInput(e.key);
+                        if (e.key === 'Enter' || e.key === '=') handleInput('=');
+                        if (e.key === 'Backspace' || e.key.toLowerCase() === 'c') handleInput('C');
                     });
-                    updateDisplay();
                 },
-                // FIXED PAINT APP
-                paint: () => {
-                    const content = `<div class="window-content window-content-nopad"><div class="paint-app"><div class="toolbar">
-                        Color: <input type="color" value="#000000"> Brush: <button data-size="2">S</button><button data-size="5">M</button><button data-size="10">L</button>
-                        </div><canvas></canvas></div></div>`;
-                    const win = createWindow('Glimpse-Paint', content, {width: 500, height: 400});
-                    const canvas = win.querySelector(`canvas`);
-                    const ctx = canvas.getContext('2d');
-                    let brushSize = 2;
-                    new ResizeObserver(() => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; }).observe(canvas);
-                    let painting = false;
-                    const getPos = (e) => {
-                        const rect = canvas.getBoundingClientRect();
-                        const touch = e.touches ? e.touches[0] : e;
-                        return { x: touch.clientX - rect.left, y: touch.clientY - rect.top };
-                    };
-                    const startDrawing = (e) => { painting = true; const {x,y} = getPos(e); ctx.beginPath(); ctx.moveTo(x,y); };
-                    const stopDrawing = () => { painting = false; };
-                    const draw = (e) => { if (!painting) return; e.preventDefault(); const {x,y} = getPos(e); ctx.lineWidth = brushSize; ctx.lineCap = 'butt'; ctx.strokeStyle = win.querySelector('input[type=color]').value; ctx.lineTo(x, y); ctx.stroke(); };
-                    
-                    canvas.addEventListener('mousedown', startDrawing);
-                    canvas.addEventListener('mouseup', stopDrawing);
-                    canvas.addEventListener('mouseleave', stopDrawing);
-                    canvas.addEventListener('mousemove', draw);
-                    canvas.addEventListener('touchstart', startDrawing, {passive: false});
-                    canvas.addEventListener('touchend', stopDrawing);
-                    canvas.addEventListener('touchmove', draw, {passive: false});
-
-                    win.querySelector('.toolbar').addEventListener('click', e => { if(e.target.dataset.size) brushSize = e.target.dataset.size; });
-                },
-
-                // Other apps (unchanged logic, only fixing API buttons below)
+                
+                // Other apps remain unchanged except for API app fixes below.
                 notepad: (initialContent = '') => { const win = createWindow('Text Editor', `<div class="window-content"><textarea spellcheck="false"></textarea></div>`); const textarea = win.querySelector('textarea'); textarea.value = initialContent; if (win.querySelector('.title-bar .title').textContent === 'notes.txt') { textarea.addEventListener('input', () => { localStorage.setItem('useless-os-notes.txt', textarea.value); }); } },
                 settings: () => { const content = `<div class="window-content"><p>Select system theme:</p><button class="action-button" data-theme="theme-light">Light</button><button class="action-button" data-theme="theme-cream">Cream</button><button class="action-button" data-theme="theme-dark">Dark</button></div>`; const win = createWindow('Settings', content, {width: 350, height: 180}); win.querySelectorAll('[data-theme]').forEach(btn => btn.addEventListener('click', () => document.body.className = btn.dataset.theme)); },
                 files: () => { const content = `<div class="window-content"><div class="files-list"><div>/</div><div>  [D] bin</div><div>  [D] home</div><div>    [D] guest</div><div class="clickable" data-action="open-file" data-filename="notes.txt">      [F] notes.txt</div><div>  [D] var</div></div></div>`; const win = createWindow('File Manager', content, {width: 350}); win.querySelector('.files-list').addEventListener('click', e => { if (e.target.dataset.action === 'open-file') { const noteWin = apps.notepad(localStorage.getItem('useless-os-notes.txt') || ''); noteWin.querySelector('.title-bar .title').textContent = 'notes.txt'; } }); },
@@ -371,17 +310,18 @@
                 arenaViz: () => { createWindow('arena-viz', `<div class="window-content window-content-nopad"><iframe src="https://arena-visualizer.github.io"></iframe></div>`, {width:640,height:480}); },
                 minAudioViz: () => { createWindow('min-audio-viz', `<div class="window-content window-content-nopad"><iframe src="https://minimal-audio-visualizer.github.io"></iframe></div>`, {width:640,height:480}); },
                 ansiart: ()=>{const a=[`<pre>\n   .-------.\n  /   o   o   \\\n /     \\_/     \\\n/| \\_________/ |\\\n| \\  /     \\  / |\n|  \\/   _   \\/  |\n|   \\ ( V ) /   |\n|    \\ \\ / /    |\n'-----'   '-----'</pre>`,`<pre>\n  /\\_/\\\n ( o.o )\n  > ^ <</pre>`,`<pre>\n   //\n\\\\_//\n \\_/_/\n  /\\ \\\n //\\\\</pre>`];let c=0;const w=createWindow('ASCII-View',`<div class="window-content clickable">${a[0]}</div>`,{width:300,height:280});w.querySelector('.window-content').addEventListener('click',()=>{c=(c+1)%a.length;w.querySelector('.window-content').innerHTML=a[c]})},
+                paint: () => { const win = createWindow('Glimpse-Paint', `<div class="window-content window-content-nopad"><div class="paint-app"><div class="toolbar">Color: <input type="color" value="#000000"> Brush: <button data-size="2">S</button><button data-size="5">M</button><button data-size="10">L</button></div><canvas></canvas></div></div>`, {width: 500, height: 400}); const canvas = win.querySelector(`canvas`); const ctx = canvas.getContext('2d'); let brushSize = 2; new ResizeObserver(() => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; }).observe(canvas); let painting = false; const getPos = (e) => { const rect = canvas.getBoundingClientRect(); const touch = e.touches ? e.touches[0] : e; return { x: touch.clientX - rect.left, y: touch.clientY - rect.top }; }; const startDrawing = (e) => { painting = true; const {x,y} = getPos(e); ctx.beginPath(); ctx.moveTo(x,y); }; const stopDrawing = () => { painting = false; }; const draw = (e) => { if (!painting) return; e.preventDefault(); const {x,y} = getPos(e); ctx.lineWidth = brushSize; ctx.lineCap = 'butt'; ctx.strokeStyle = win.querySelector('input[type=color]').value; ctx.lineTo(x, y); ctx.stroke(); }; canvas.addEventListener('mousedown', startDrawing); canvas.addEventListener('mouseup', stopDrawing); canvas.addEventListener('mouseleave', stopDrawing); canvas.addEventListener('mousemove', draw); canvas.addEventListener('touchstart', startDrawing, {passive: false}); canvas.addEventListener('touchend', stopDrawing); canvas.addEventListener('touchmove', draw, {passive: false}); win.querySelector('.toolbar').addEventListener('click', e => { if(e.target.dataset.size) brushSize = e.target.dataset.size; }); },
                 
-                // NEW/FIXED API APPS
+                // FIXED API APPS
                 wikiexplorer: () => { const win = createWindow('Web-Get', `<div class="window-content"><p>Fetch random summary from Wikipedia.</p><button class="action-button">[ GET NEW ]</button><div class="wikiexplorer-result result-box">Awaiting...</div></div>`); const btn = win.querySelector('.action-button'), res = win.querySelector('.wikiexplorer-result'); const get = async () => { res.innerHTML = '<i>Fetching...</i>'; try { const r = await fetch('https://en.wikipedia.org/api/rest_v1/page/random/summary'); if (!r.ok) throw new Error(`Network Error: ${r.status}`); const d = await r.json(); res.innerHTML = `<p><strong><a href="${d.content_urls.desktop.page}" target="_blank" rel="noopener noreferrer">${d.title}</a></strong></p><p>${d.extract}</p>`; } catch (e) { res.innerHTML = `<p><strong>ERROR:</strong></p><pre>${e.message}</pre>`; } }; btn.addEventListener('click', get); get(); },
                 catfact: () => { const win = createWindow('Cat Facts', `<div class="window-content"><button class="action-button">[ NEW FACT ]</button><div class="result-box">...</div></div>`, {height:200}); const btn = win.querySelector('button'), res = win.querySelector('.result-box'); const get = async () => { res.textContent = '...'; try { const r = await fetch('https://catfact.ninja/fact'); const d = await r.json(); res.textContent = d.fact; } catch { res.textContent = 'API Error.'; } }; btn.addEventListener('click', get); get(); },
                 dogpic: () => { const win = createWindow('Dog-Pic', `<div class="window-content"><button class="action-button">[ NEW DOG ]</button><div class="result-box" style="text-align:center;">...</div></div>`, {width:400, height:450}); const btn = win.querySelector('button'), res = win.querySelector('.result-box'); const get = async () => { res.innerHTML = '...'; try { const r = await fetch('https://dog.ceo/api/breeds/image/random'); const d = await r.json(); res.innerHTML = `<p>a good boy appears:</p><img src="${d.message}" style="max-width:100%; max-height:300px;">`; } catch { res.textContent = 'API Error.'; } }; btn.addEventListener('click', get); get(); },
                 joker: () => { const win = createWindow('Joker', `<div class="window-content"><button class="action-button">[ NEW JOKE ]</button><div class="result-box">...</div></div>`); const btn = win.querySelector('button'), res = win.querySelector('.result-box'); const get = async () => { res.innerHTML = '...'; try { const r = await fetch('https://official-joke-api.appspot.com/random_joke'); const d = await r.json(); res.innerHTML = `<p>${d.setup}</p><p>...</p>`; setTimeout(()=>res.innerHTML += `<p><strong>${d.punchline}</strong></p>`, 2000); } catch { res.textContent = 'API Error.'; } }; btn.addEventListener('click', get); get(); },
-                numfact: () => { const win = createWindow('Num-Fact', `<div class="window-content"><button class="action-button">[ NEW FACT ]</button><div class="result-box">...</div></div>`, {height:200}); const btn = win.querySelector('button'), res = win.querySelector('.result-box'); const get = async () => { res.textContent = '...'; try { const r = await fetch('http://numbersapi.com/random/math'); const d = await r.text(); res.textContent = d; } catch { res.textContent = 'API Error.'; } }; btn.addEventListener('click', get); get(); },
+                numfact: () => { const win = createWindow('Num-Fact', `<div class="window-content"><button class="action-button">[ NEW FACT ]</button><div class="result-box">...</div></div>`, {height:200}); const btn = win.querySelector('button'), res = win.querySelector('.result-box'); const get = async () => { res.textContent = '...'; try { const r = await fetch('https://numbersapi.com/random/math'); const d = await r.text(); res.textContent = d; } catch { res.textContent = 'API Error.'; } }; btn.addEventListener('click', get); get(); },
                 pokedex: () => { const win = createWindow('PokeDex', `<div class="window-content"><button class="action-button">[ RANDOM ]</button><div class="result-box">...</div></div>`, {width: 350, height: 450}); const btn = win.querySelector('button'), res = win.querySelector('.result-box'); const get = async () => { res.innerHTML = '...'; try { const id = Math.floor(Math.random() * 905) + 1; const r = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`); const d = await r.json(); res.innerHTML = `<h3 style="margin:0;">#${d.id} ${d.name}</h3><img src="${d.sprites.front_default}" style="width:128px;height:128px;"><p>Type: ${d.types.map(t=>t.type.name).join(', ')}</p><p>Height: ${d.height/10}m | Weight: ${d.weight/10}kg</p>`; } catch { res.textContent = 'API Error.'; } }; btn.addEventListener('click', get); get(); },
                 usergen: () => { const win = createWindow('User-Gen', `<div class="window-content"><button class="action-button">[ GENERATE ]</button><div class="result-box">...</div></div>`, {height: 400}); const btn = win.querySelector('button'), res = win.querySelector('.result-box'); const get = async () => { res.innerHTML = '...'; try { const r = await fetch('https://randomuser.me/api/'); const d = await r.json(); const u = d.results[0]; res.innerHTML = `<img src="${u.picture.large}" style="float:left; margin-right:10px;"><p>Name: ${u.name.first} ${u.name.last}</p><p>Addr: ${u.location.city}, ${u.location.country}</p><p>Email: ${u.email}</p><p>User: ${u.login.username}</p><p>Pass: ${u.login.password}</p>`; } catch { res.textContent = 'API Error.'; } }; btn.addEventListener('click', get); get(); },
                 personascan: () => { const content = `<div class="window-content"><p>Enter a first name:</p><div style="display:flex;"><input type="text" placeholder="e.g. alex"><button class="action-button" style="margin-left:5px;">Scan</button></div><div class="result-box">...</div></div>`; const win = createWindow('Persona-Scan', content, {height:350}); const btn = win.querySelector('button'), res = win.querySelector('.result-box'), input = win.querySelector('input'); const get = async () => { const name = input.value.trim(); if(!name) return; res.innerHTML = `Scanning for "${name}"...`; try { const [age,gender,nation] = await Promise.all([ fetch(`https://api.agify.io?name=${name}`), fetch(`https://api.genderize.io?name=${name}`), fetch(`https://api.nationalize.io?name=${name}`) ]); const d1 = await age.json(), d2 = await gender.json(), d3 = await nation.json(); res.innerHTML = `<p>Name: <strong>${d1.name}</strong></p><p>Predicted Age: <strong>${d1.age}</strong></p><p>Predicted Gender: <strong>${d2.gender}</strong> (${(d2.probability*100).toFixed(0)}% prob.)</p><p>Top Nationality: <strong>${d3.country[0].country_id}</strong> (${(d3.country[0].probability*100).toFixed(0)}% prob.)</p>`; } catch { res.textContent = 'API Error.'; }}; btn.addEventListener('click', get); },
-                isstracker: () => { const content = `<div class="window-content"><p>People in Space: <strong id="peeps">-</strong></p><div id="names" style="margin-bottom:10px;"></div><p>ISS Location:</p><div class="result-box"><pre id="iss-pos">Fetching...</pre></div></div>`; const win = createWindow('ISS-Tracker', content, {height: 450}); const peeps = win.querySelector('#peeps'), names = win.querySelector('#names'), pos = win.querySelector('#iss-pos'); const getPeeps = async () => { try { const r=await fetch('https://api.open-notify.org/astros.json'); const d=await r.json(); peeps.textContent=d.number; names.innerHTML = d.people.map(p=>`  - ${p.name}`).join('<br>'); } catch { peeps.textContent='Error'; } }; const getPos = async () => { try { const r=await fetch('https://api.open-notify.org/iss-now.json'); const d=await r.json(); pos.textContent = `LAT: ${d.iss_position.latitude}\nLON: ${d.iss_position.longitude}`; } catch { pos.textContent='Error fetching position.'; } }; getPeeps(); getPos(); const intervalId = setInterval(getPos, 5000); windowRegistry[win.id].cleanup = () => clearInterval(intervalId); }
+                isstracker: () => { const content = `<div class="window-content"><p>People in Space: <strong id="peeps">-</strong></p><div id="names" style="margin-bottom:10px;"></div><p>ISS Location:</p><div class="result-box"><pre id="iss-pos">Fetching...</pre></div></div>`; const win = createWindow('ISS-Tracker', content, {height: 450}); const peeps = win.querySelector('#peeps'), names = win.querySelector('#names'), pos = win.querySelector('#iss-pos'); const getPeeps = async () => { try { const r=await fetch('https://api.open-notify.org/astros.json'); const d=await r.json(); peeps.textContent=d.number; names.innerHTML = d.people.map(p=>`  - ${p.name}`).join('<br>'); } catch { peeps.textContent='Error'; } }; const getPos = async () => { try { const r=await fetch('http://api.open-notify.org/iss-now.json'); const d=await r.json(); pos.textContent = `LAT: ${d.iss_position.latitude}\nLON: ${d.iss_position.longitude}`; } catch { pos.textContent='Error fetching position.'; } }; getPeeps(); getPos(); const intervalId = setInterval(getPos, 5000); windowRegistry[win.id].cleanup = () => clearInterval(intervalId); }
             };
 
             // APP LAUNCHER
